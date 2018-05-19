@@ -95,6 +95,10 @@ var
 	};
 
 	//fn存在的原因是我们在需要原型的时候不再需要每次输入prototype了
+	//可以通过下面的代码来查看jquery选择的对象返回的是什么
+	//$(function(){
+		//$('li').css('background','red');
+	//});
 jQuery.fn = jQuery.prototype = {
 	// The current version of jQuery being used
 	jquery: core_version,
