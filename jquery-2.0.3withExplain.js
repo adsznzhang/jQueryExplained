@@ -162,13 +162,16 @@ jQuery.fn = jQuery.prototype = {
 
 				// HANDLE: $(#id)
 				//能进入else的是id选项
+				//match返回的结果这个样子：match = ['#div1',null,'div1']
 				} else {
 					elem = document.getElementById( match[2] );
 
 					// Check parentNode to catch when Blackberry 4.6 returns
 					// nodes that are no longer in the document #6963
+					//双重判断自身和父级元素
 					if ( elem && elem.parentNode ) {
 						// Inject the element directly into the jQuery object
+						//jQuery选择元素的时候是存储成JSON，而不是数组，所以要手动添加长度
 						this.length = 1;
 						this[0] = elem;
 					}
@@ -180,6 +183,8 @@ jQuery.fn = jQuery.prototype = {
 
 			// HANDLE: $(expr, $(...))
 			} else if ( !context || context.jquery ) {
+				//rootjQuery : $(document).find('ul li.box')
+				//这个find方法是调用的sizzle库
 				return ( context || rootjQuery ).find( selector );
 
 			// HANDLE: $(expr, context)
