@@ -119,13 +119,20 @@ jQuery.fn = jQuery.prototype = {
 			}
 
 			// Match html or make sure no context is specified for #id
+			//创建标签或者选择ID
 			if ( match && (match[1] || !context) ) {
 
 				// HANDLE: $(html) -> $(array)
+				//第一个if标签能进入
 				if ( match[1] ) {
 					context = context instanceof jQuery ? context[0] : context;
 
 					// scripts is true for back-compat
+					//把字符串编码成节点数组
+					//var str = '<li>1</li><li>2</li><li>3</li>';
+					//下面会输出['li','li','li'],他的第二个参数指定了根节点
+					//var arr = jQuery.parseHTML(str,document);
+					
 					jQuery.merge( this, jQuery.parseHTML(
 						match[1],
 						context && context.nodeType ? context.ownerDocument || context : document,
@@ -133,13 +140,18 @@ jQuery.fn = jQuery.prototype = {
 					) );
 
 					// HANDLE: $(html, props)
+					//创建标签带属性,第一个判断单标签的正则,第二个判断对象
 					if ( rsingleTag.test( match[1] ) && jQuery.isPlainObject( context ) ) {
+						//对对象进行for in循环
 						for ( match in context ) {
 							// Properties of context are called as methods if possible
+							//例如$('<li></li>',{title: 'hi',html: 'abcd'}).appendTo('ul');
+							//this[match]会遍历到title和html，当html的时候会进入第一个if，因为html是个函数
 							if ( jQuery.isFunction( this[ match ] ) ) {
 								this[ match ]( context[ match ] );
 
 							// ...and otherwise set as attributes
+							//对不是函数的属性，就直接加属性了比如上面的title
 							} else {
 								this.attr( match, context[ match ] );
 							}
@@ -149,6 +161,7 @@ jQuery.fn = jQuery.prototype = {
 					return this;
 
 				// HANDLE: $(#id)
+				//能进入else的是id选项
 				} else {
 					elem = document.getElementById( match[2] );
 
