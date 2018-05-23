@@ -210,6 +210,7 @@ jQuery.fn = jQuery.prototype = {
 			this.context = selector.context;
 		}
 
+		//把类数组转换成数组从而可以调用数组方法
 		return jQuery.makeArray( selector, this );
 	},
 
@@ -237,8 +238,14 @@ jQuery.fn = jQuery.prototype = {
 
 	// Take an array of elements and push it onto the stack
 	// (returning the new matched element set)
+	//jQuery 对象的入栈处理
+	//可以看下jQeury中slice方法
+	//map中也有调用
 	pushStack: function( elems ) {
 
+		//能变红的是span部分,this目前指向的是div，并通过prevObject存了下来
+		//当你想控制下面语句中的div对象的时候，可以调用end()其实访问的就是prevObject
+		//$('div').pushStack($('span')).css('background','red')
 		// Build a new jQuery matched element set
 		var ret = jQuery.merge( this.constructor(), elems );
 
@@ -253,7 +260,10 @@ jQuery.fn = jQuery.prototype = {
 	// Execute a callback for every element in the matched set.
 	// (You can seed the arguments with an array of args, but this is
 	// only used internally.)
+	//加强版的for循环吧
+	//这个是实例方法
 	each: function( callback, args ) {
+		//返回的是jQuery的工具方法
 		return jQuery.each( this, callback, args );
 	},
 
@@ -265,6 +275,7 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	slice: function() {
+		//参数是个集合就需要通过apply来改变this指向
 		return this.pushStack( core_slice.apply( this, arguments ) );
 	},
 
@@ -276,6 +287,7 @@ jQuery.fn = jQuery.prototype = {
 		return this.eq( -1 );
 	},
 
+	//比如有很多对象，选出来具体的某一个
 	eq: function( i ) {
 		var len = this.length,
 			j = +i + ( i < 0 ? len : 0 );
