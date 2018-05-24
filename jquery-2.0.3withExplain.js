@@ -315,6 +315,52 @@ jQuery.fn = jQuery.prototype = {
 jQuery.fn.init.prototype = jQuery.fn;
 
 //把一个对象复制到另一个对象里面，深浅复制
+//扩展静态方法, jQuery.fn.extend是扩展实例方法它指向jQuery原型
+//当只写一个对象自变量的时候，JQ中扩展插件的形式
+//$.extend({
+//	//扩展工具方法
+//	aaa:function(){
+//		alert(1);
+//	},
+//	bbb:function(){
+//		alert(2);
+//	}
+//});
+//
+//$.aaa();
+//$.bbb();
+//
+//
+//$.fn.extend({
+//	//扩展JQ实例方法
+//	aaa:function(){
+//		alert(3);
+//	},
+//	bbb:function(){
+//		alert(4);
+//	}
+//});
+//$().aaa();
+//$().bbb();
+//$.extend(); -> this -> $ this.aaa -> $.aaa()
+//$.fn.extend(); -> this -> $.fn -> this.aaa -> $().aaa() 实际上是通过创建对象来调用
+
+
+//当写多个对象自变量的时候，后面的对象都扩展到第一个对象身上
+//var a = {};
+//$.extend(a, {name: 'hello'},{age: 30});
+//console.log(a);
+
+//下面是深拷贝浅拷贝，默认是浅拷贝
+
+//var a = {}
+//var b ={name: {age:30}};
+//$.extend(a, b);//$.extend(trur, a, b);
+//a.name ='hi';
+//a.name.age = 20;
+//alert(b.name.age);
+//如果要进行深拷贝需要第一个参数为true
+
 jQuery.extend = jQuery.fn.extend = function() {
 	var options, name, src, copy, copyIsArray, clone,
 		target = arguments[0] || {},
