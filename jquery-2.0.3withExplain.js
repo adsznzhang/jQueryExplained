@@ -441,10 +441,18 @@ jQuery.extend = jQuery.fn.extend = function() {
 	return target;
 };
 
+//jQuery的工具方法
 jQuery.extend({
 	// Unique for each copy of jQuery on the page
+	//生成唯一JQ字符串(内部使用),把不是数字的换成空字符
 	expando: "jQuery" + ( core_version + Math.random() ).replace( /\D/g, "" ),
 
+	//防止冲突
+	//var Daiti = $.noConflict()//这句话是释放$;
+	//var $ = 123;
+	//Daiti(function(){
+	//	alert($);
+	//});
 	noConflict: function( deep ) {
 		if ( window.$ === jQuery ) {
 			window.$ = _$;
@@ -457,6 +465,8 @@ jQuery.extend({
 		return jQuery;
 	},
 
+	//调用的顺序如下
+	//$(function(){})-> $(document).ready(function(){}) -> $().ready() -> jQuery.ready.promise().done(fn) 返回的是一个延迟对象;
 	// Is the DOM ready to be used? Set to true once it occurs.
 	isReady: false,
 
