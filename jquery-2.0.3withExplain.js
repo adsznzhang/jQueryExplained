@@ -366,22 +366,27 @@ jQuery.extend = jQuery.fn.extend = function() {
 		target = arguments[0] || {},
 		i = 1,
 		length = arguments.length,
+		//deep深拷贝默认是false
 		deep = false;
 
 	// Handle a deep copy situation
+	//看是不是深拷贝
 	if ( typeof target === "boolean" ) {
+		//把第一个参数赋值给deep
 		deep = target;
+		//把第二个参数重新赋值给目标对象
 		target = arguments[1] || {};
 		// skip the boolean and the target
 		i = 2;
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
+	//看看参数是否是对象和函数！如果不是则返回空对象
 	if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
 		target = {};
 	}
 
-	//这个地方很有意思，通过判断参数个数来进行一些对象的选择！！！小技巧！
+	//如果只有一个参数则把对象加载到$对象上！小技巧！
 	// extend jQuery itself if only one argument is passed
 	if ( length === i ) {
 		target = this;
@@ -397,17 +402,26 @@ jQuery.extend = jQuery.fn.extend = function() {
 				copy = options[ name ];
 
 				// Prevent never-ending loop
+				//防止循环引用
 				if ( target === copy ) {
 					continue;
 				}
 
 				// Recurse if we're merging plain objects or arrays
+				//深拷贝
 				if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
 					if ( copyIsArray ) {
 						copyIsArray = false;
+						//和下面clone的功能类似
 						clone = src && jQuery.isArray(src) ? src : [];
 
 					} else {
+						//这句话很关键看下面的代码：
+						//var a = {name: {job: 'it'}}:
+						//var b = {name: {age: 30}};
+						//$.extend(true, a, b);
+						//console.log(a);
+						//a 并不会被覆盖的原因就是，clone等于src而不是空对象
 						clone = src && jQuery.isPlainObject(src) ? src : {};
 					}
 
@@ -415,6 +429,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 					target[ name ] = jQuery.extend( deep, clone, copy );
 
 				// Don't bring in undefined values
+				//浅拷贝
 				} else if ( copy !== undefined ) {
 					target[ name ] = copy;
 				}
