@@ -555,17 +555,19 @@
       return obj != null && obj === obj.window;
     },
 
-    //typeof NaN会返回number，
+    //typeof NaN会返回number，同时也会判断数字是否有限Number.MAX_VALUE
     isNumeric: function(obj) {
       return !isNaN(parseFloat(obj)) && isFinite(obj);
     },
 
+    //判断数据类型
     type: function(obj) {
       if (obj == null) {
         return String(obj);
       }
       // Support: Safari <= 5.1 (functionish RegExp)
       return typeof obj === "object" || typeof obj === "function" ?
+      //可以看到引用的是原生的.toString方法,然后通过jQuery.each来提取属性
         class2type[core_toString.call(obj)] || "object" :
         typeof obj;
     },
