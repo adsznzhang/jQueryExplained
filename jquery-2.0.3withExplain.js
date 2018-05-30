@@ -577,6 +577,7 @@
       // - Any object or value whose internal [[Class]] property is not "[object Object]"
       // - DOM nodes
       // - window
+      //节点的nodeType存在或者是window
       if (jQuery.type(obj) !== "object" || obj.nodeType || jQuery.isWindow(
           obj)) {
         return false;
@@ -588,6 +589,7 @@
       // https://bugzilla.mozilla.org/show_bug.cgi?id=814622
       try {
         if (obj.constructor &&
+          //在最顶层的object原型里有个属性是isPrototypeof，这里用hasOwnproperty来检测是不是对象原型下的属性！
           !core_hasOwn.call(obj.constructor.prototype, "isPrototypeOf")
         ) {
           return false;
@@ -601,8 +603,9 @@
       return true;
     },
 
+    //判断对象下面是否有属性和方法，for in 不是自身属性和方法则不进行遍历
     isEmptyObject: function(obj) {
-      var name;
+     var name;
       for (name in obj) {
         return false;
       }
@@ -616,24 +619,32 @@
     // data: string of html
     // context (optional): If specified, the fragment will be created in this context, defaults to document
     // keepScripts (optional): If true, will include scripts passed in the html string
+    //解析HTML，把字符串翻译成HTML
+    //var str = '<li></li><li></li><script></script>';
+    //第三个布尔值的作用是是否解析script标签，如果true则解析
+    //console.log($.parseHTML(str, document, true))
     parseHTML: function(data, context, keepScripts) {
+      //data必须是字符串
       if (!data || typeof data !== "string") {
         return null;
       }
+      //执行上下文的选择
       if (typeof context === "boolean") {
         keepScripts = context;
         context = false;
       }
       context = context || document;
 
+      //用正则来判断html单标签比如<li></li>
       var parsed = rsingleTag.exec(data),
         scripts = !keepScripts && [];
 
-      // Single tag
+      // Single tag 但标签
       if (parsed) {
         return [context.createElement(parsed[1])];
       }
 
+      //创建多标签
       parsed = jQuery.buildFragment([data], context, scripts);
 
       if (scripts) {
@@ -641,6 +652,7 @@
           .remove();
       }
 
+      //节点我们都知道不是数组，最后通过merge把它转换成数组。。虽然我不是很懂
       return jQuery.merge([], parsed.childNodes);
     },
 
