@@ -656,23 +656,27 @@
       return jQuery.merge([], parsed.childNodes);
     },
 
+    //把字符串解析成JSON
     parseJSON: JSON.parse,
 
     // Cross-browser xml parsing
     parseXML: function(data) {
       var xml, tmp;
+      //首先判断数据是否存在和字符串
       if (!data || typeof data !== "string") {
         return null;
       }
 
       // Support: IE9
       try {
+        //创建实例对象
         tmp = new DOMParser();
         xml = tmp.parseFromString(data, "text/xml");
       } catch (e) {
         xml = undefined;
       }
 
+      //其他浏览器如果出错会形成一个parsererror的标签，标签的内容是错误
       if (!xml || xml.getElementsByTagName("parsererror")
         .length) {
         jQuery.error("Invalid XML: " + data);
@@ -683,8 +687,16 @@
     noop: function() {},
 
     // Evaluates a script in a global context
+    //全局解析JS
+  //  function test(){
+  //    jQuery.globalEval("var newVar = true;")
+  //    var newVar = true;
+  //  }
+  //  test():
+  // alert(newVar)
     globalEval: function(code) {
       var script,
+      //需要把eval存成一个局部变量，而不是直接引用
         indirect = eval;
 
       code = jQuery.trim(code);
@@ -693,6 +705,7 @@
         // If the code includes a valid, prologue position
         // strict mode pragma, execute code by injecting a
         // script tag into the document.
+        //严格模式下创建script标签添加code再删除标签
         if (code.indexOf("use strict") === 1) {
           script = document.createElement("script");
           script.text = code;
