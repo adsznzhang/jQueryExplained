@@ -731,12 +731,15 @@
     },
 
     // args is for internal usage only
+    //遍历集合，第一个参数是对象，第二个参数是回调
     each: function(obj, callback, args) {
       var value,
         i = 0,
         length = obj.length,
+        //类数组 {0:, 1:,2:, length:3}
         isArray = isArraylike(obj);
 
+        //args一般是内部使用
       if (args) {
         if (isArray) {
           for (; i < length; i++) {
@@ -780,15 +783,21 @@
       return obj;
     },
 
+    //去前后空格
+    //var str = ' hello ';
+    //alert('('+$.trim(str)+')');
     trim: function(text) {
       return text == null ? "" : core_trim.call(text);
     },
 
     // results is for internal usage only
+    //把类数组或字符串JSON 转换成数组
     makeArray: function(arr, results) {
+      //判断第二个参数
       var ret = results || [];
 
       if (arr != null) {
+        //用Object的原因是isArraylike只能接受对象
         if (isArraylike(Object(arr))) {
           jQuery.merge(ret,
             typeof arr === "string" ? [arr] : arr
@@ -801,10 +810,17 @@
       return ret;
     },
 
+    //数组版的indexOf
+ //   var arr = ['a','b','c','d'];
+ //   alert($.inArray('b',arr));
     inArray: function(elem, arr, i) {
       return arr == null ? -1 : core_indexOf.call(arr, elem, i);
     },
 
+    //合并数组
+    //对内是合并JSON
+    //if: $.merge(['a','b'],['c','d'])
+    //else: $.merge(['a','b'], {0:'c',1:'d'})
     merge: function(first, second) {
       var l = second.length,
         i = first.length,
@@ -814,7 +830,9 @@
         for (; j < l; j++) {
           first[i++] = second[j];
         }
-      } else {
+      } 
+      //JSON肯定走else
+      else {
         while (second[j] !== undefined) {
           first[i++] = second[j++];
         }
