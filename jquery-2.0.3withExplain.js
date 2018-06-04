@@ -843,16 +843,25 @@
       return first;
     },
 
+    //过滤新数组,用法如下
+    //var arr = [1,2,3,4];
+    //arr = $.grep(arr, function(n, i){
+    //  return n > 2;
+    //})
+    //console.log(arr);
     grep: function(elems, callback, inv) {
       var retVal,
         ret = [],
         i = 0,
         length = elems.length;
+        //不写参数，！！inv就是false
       inv = !!inv;
 
       // Go through the array, only saving the items
       // that pass the validator function
       for (; i < length; i++) {
+        //比如上面的callback没有参数，那么inv是false， return n >2  在3，和4情况下是真，
+        //那么经过两个！！ retVal就是真。。。所以inv ！== retVal 
         retVal = !!callback(elems[i], i);
         if (inv !== retVal) {
           ret.push(elems[i]);
@@ -863,6 +872,11 @@
     },
 
     // arg is for internal usage only
+    //映射数组, 使用方法如下
+    //var arr = [1,2,3,4];
+    //arr = $.map(arr, function(){
+    //  return n+1;
+    //})
     map: function(elems, callback, arg) {
       var value,
         i = 0,
@@ -892,6 +906,7 @@
       }
 
       // Flatten any nested arrays
+      //展开内嵌数组
       return core_concat.apply([], ret);
     },
 
@@ -900,6 +915,7 @@
 
     // Bind a function to a context, optionally partially applying any
     // arguments.
+    //更改this指向
     proxy: function(fn, context) {
       var tmp, args, proxy;
 
