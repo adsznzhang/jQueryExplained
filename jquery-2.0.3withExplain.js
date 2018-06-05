@@ -919,6 +919,15 @@
     proxy: function(fn, context) {
       var tmp, args, proxy;
 
+      //这个地方的判断分析如下
+      //var obj = {
+      //  show: function(){
+      //    alert(this);
+      //  }
+      //};
+      //$(document).click($.prox(obj,'show'));这句话就相当于
+      //$.proxy(obj,'show') -> $.proxy(obj.show,obj);
+
       if (typeof context === "string") {
         tmp = fn[context];
         context = fn;
@@ -932,6 +941,7 @@
       }
 
       // Simulated bind
+      //前两个参数去除
       args = core_slice.call(arguments, 2);
       proxy = function() {
         return fn.apply(context || this, args.concat(core_slice.call(
@@ -944,22 +954,28 @@
       return proxy;
     },
 
+    //内部使用，多功能值操作
     // Multifunctional method to get and set values of a collection
     // The value/s can optionally be executed if it's a function
     access: function(elems, fn, key, value, chainable, emptyGet, raw) {
       var i = 0,
         length = elems.length,
+        //如果key有值，则bulk是false
         bulk = key == null;
 
       // Sets many values
+      //多个参数设置要判断是否是对象$('#div1').css({background: 'yellow',width: '300px'})
       if (jQuery.type(key) === "object") {
         chainable = true;
         for (i in key) {
+          //递归调用access来设置每一个键里的单个值
           jQuery.access(elems, fn, i, key[i], true, emptyGet, raw);
         }
 
         // Sets one value
+        //单个参数设置$('#div1').css('background','yellow');
       } else if (value !== undefined) {
+        //手动设置一下，因为如果这个参数不写会是undefined
         chainable = true;
 
         if (!jQuery.isFunction(value)) {
@@ -968,11 +984,13 @@
 
         if (bulk) {
           // Bulk operations run against the entire set
+          //如果是字符串就走if
           if (raw) {
             fn.call(elems, value);
             fn = null;
 
             // ...except when executing function values
+            //如果是function就走else逻辑
           } else {
             bulk = fn;
             fn = function(elem, key, value) {
