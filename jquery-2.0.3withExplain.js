@@ -1016,16 +1016,26 @@
         length ? fn(elems[0], key) : emptyGet;
     },
 
+    //alert($.now());
     now: Date.now,
 
     // A method for quickly swapping in/out CSS properties to get correct calculations.
     // Note: this method belongs to the css module but it's needed here for the support module.
     // If support gets modularized, this method should be moved back to the css module.
+    //里面的display：none可以用display：block；visibility：hidden；position：absolute来代替然后内部swap再换回display：none
+    //<div id="div1" style="width:100px; height:100px;background:red;display:none"></div>
+    //$(function(){
+    //  //jQuery 方法,可以获取隐藏元素的方法
+    //  alert($('#diva').width());
+    //  //原生的获取宽度方法,隐藏元素的值无法获取
+    //  alert($('#div1').get(0).offsetWidth);
+    //})
     swap: function(elem, options, callback, args) {
       var ret, name,
         old = {};
 
       // Remember the old values, and insert the new ones
+      //保存现有值
       for (name in options) {
         old[name] = elem.style[name];
         elem.style[name] = options[name];
@@ -1034,6 +1044,7 @@
       ret = callback.apply(elem, args || []);
 
       // Revert the old values
+      //还原值
       for (name in options) {
         elem.style[name] = old[name];
       }
@@ -1074,18 +1085,22 @@
       class2type["[object " + name + "]"] = name.toLowerCase();
     });
 
+    //判断是否数组，类数组
   function isArraylike(obj) {
     var length = obj.length,
       type = jQuery.type(obj);
 
+      ///首先判断是否是window，因为不确定window下面是否会挂载array，function属性什么的，在下面会单独判断
     if (jQuery.isWindow(obj)) {
       return false;
     }
 
+    //nodeType肯定是元素节点，如果有长度，那么肯定是类数组
     if (obj.nodeType === 1 && length) {
       return true;
     }
 
+    //最后判断数组和函数
     return type === "array" || type !== "function" &&
       (length === 0 ||
         typeof length === "number" && length > 0 && (length - 1) in obj);
