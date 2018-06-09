@@ -482,17 +482,15 @@
 
     // Hold (or release) the ready event
     //推迟DOM触发
-   // $.holdReady(true);
+    // $.holdReady(true);
 
-
-
-   //$.getScript('a.js',function({
-     //$.holdReady(false);
-   //}));
-//   $(function(){
-//     alert(2);
-//   });
-//
+    //$.getScript('a.js',function({
+    //$.holdReady(false);
+    //}));
+    //   $(function(){
+    //     alert(2);
+    //   });
+    //
     holdReady: function(hold) {
       if (hold) {
         jQuery.readyWait++;
@@ -567,7 +565,7 @@
       }
       // Support: Safari <= 5.1 (functionish RegExp)
       return typeof obj === "object" || typeof obj === "function" ?
-      //可以看到引用的是原生的.toString方法,然后通过jQuery.each来提取属性
+        //可以看到引用的是原生的.toString方法,然后通过jQuery.each来提取属性
         class2type[core_toString.call(obj)] || "object" :
         typeof obj;
     },
@@ -605,7 +603,7 @@
 
     //判断对象下面是否有属性和方法，for in 不是自身属性和方法则不进行遍历
     isEmptyObject: function(obj) {
-     var name;
+      var name;
       for (name in obj) {
         return false;
       }
@@ -688,15 +686,15 @@
 
     // Evaluates a script in a global context
     //全局解析JS
-  //  function test(){
-  //    jQuery.globalEval("var newVar = true;")
-  //    var newVar = true;
-  //  }
-  //  test():
-  // alert(newVar)
+    //  function test(){
+    //    jQuery.globalEval("var newVar = true;")
+    //    var newVar = true;
+    //  }
+    //  test():
+    // alert(newVar)
     globalEval: function(code) {
       var script,
-      //需要把eval存成一个局部变量，而不是直接引用
+        //需要把eval存成一个局部变量，而不是直接引用
         indirect = eval;
 
       code = jQuery.trim(code);
@@ -739,7 +737,7 @@
         //类数组 {0:, 1:,2:, length:3}
         isArray = isArraylike(obj);
 
-        //args一般是内部使用
+      //args一般是内部使用
       if (args) {
         if (isArray) {
           for (; i < length; i++) {
@@ -811,8 +809,8 @@
     },
 
     //数组版的indexOf
- //   var arr = ['a','b','c','d'];
- //   alert($.inArray('b',arr));
+    //   var arr = ['a','b','c','d'];
+    //   alert($.inArray('b',arr));
     inArray: function(elem, arr, i) {
       return arr == null ? -1 : core_indexOf.call(arr, elem, i);
     },
@@ -830,7 +828,7 @@
         for (; j < l; j++) {
           first[i++] = second[j];
         }
-      } 
+      }
       //JSON肯定走else
       else {
         while (second[j] !== undefined) {
@@ -854,7 +852,7 @@
         ret = [],
         i = 0,
         length = elems.length;
-        //不写参数，！！inv就是false
+      //不写参数，！！inv就是false
       inv = !!inv;
 
       // Go through the array, only saving the items
@@ -1085,12 +1083,12 @@
       class2type["[object " + name + "]"] = name.toLowerCase();
     });
 
-    //判断是否数组，类数组
+  //判断是否数组，类数组
   function isArraylike(obj) {
     var length = obj.length,
       type = jQuery.type(obj);
 
-      ///首先判断是否是window，因为不确定window下面是否会挂载array，function属性什么的，在下面会单独判断
+    ///首先判断是否是window，因为不确定window下面是否会挂载array，function属性什么的，在下面会单独判断
     if (jQuery.isWindow(obj)) {
       return false;
     }
@@ -3244,6 +3242,37 @@
    *	stopOnFalse:	interrupt callings when a callback returns false
    *
    */
+  //回调函数应用例子
+//  function aaa (){
+//    alert(1);
+//  }
+//  function bbb(){
+//    alert(2);
+//  }
+//  function ccc(){
+//    alert(3);
+//  }
+//  var cb = $.Callbacks();
+//  cb.add(aaa);
+//  cb.add(bbb);
+//
+//  cb.fire();
+//
+
+//callback的实际用途,只要回调是全局的，我们就不用担心函数具体的作用域
+//比如我们想要对aaa和bbb统一的管理
+//var cb = $.Callbacks();
+//function aaa(){
+//  alert(1);
+//}
+//cb.add(aaa);
+//(function(){
+//  function bbb(){
+//    alert(2);
+//  }
+//cb.add(bbb);
+//})();
+//
   jQuery.Callbacks = function(options) {
 
     // Convert options from String-formatted to Object-formatted if needed
@@ -3265,6 +3294,7 @@
       // Index of currently firing callback (modified by remove if needed)
       firingIndex,
       // Actual callback list
+      //回调数组
       list = [],
       // Stack of fire calls for repeatable lists
       stack = !options.once && [],
@@ -3383,6 +3413,7 @@
           return !stack;
         },
         // Call all callbacks with the given context and arguments
+        //调用firewith会调用fire函数，然后再进行for循环遍历list
         fireWith: function(context, args) {
           if (list && (!fired || stack)) {
             args = args || [];
