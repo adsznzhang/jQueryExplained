@@ -3277,6 +3277,15 @@
 
     // Convert options from String-formatted to Object-formatted if needed
     // (we check in cache first)
+    //对Options进行判断，如果是字符串则，如果不是字符串则空对象,防止underfined出现
+    //无参数的执行细节，先看ADD
+//    var cb = $.Callbacks();
+//    cb.add(aaa);
+//    cb.add(bbb);
+//    cb.add(aaa,bbb)
+//    cb.add([aaa,bbb])
+//    cb.fire();
+
     options = typeof options === "string" ?
       (optionsCache[options] || createOptions(options)) :
       jQuery.extend({}, options);
@@ -3306,6 +3315,7 @@
         firingStart = 0;
         firingLength = list.length;
         firing = true;
+        //
         for (; list && firingIndex < firingLength; firingIndex++) {
           if (list[firingIndex].apply(data[0], data[1]) === false &&
             options.stopOnFalse) {
@@ -3313,6 +3323,7 @@
             break;
           }
         }
+        //触发结束
         firing = false;
         if (list) {
           if (stack) {
@@ -3330,17 +3341,25 @@
       self = {
         // Add a callback or a collection of callbacks to the list
         add: function() {
+          //先判断list，默认是[]
           if (list) {
             // First, we save the current length
+            //存储起始位置
             var start = list.length;
+            //匿名函数自执行
             (function add(args) {
+              //遍历参数
               jQuery.each(args, function(_, arg) {
                 var type = jQuery.type(arg);
+                //如果是函数类型
                 if (type === "function") {
+                  //检测是否唯一
                   if (!options.unique || !self.has(arg)) {
                     list.push(arg);
                   }
+                  //判断不是函数的情况
                 } else if (arg && arg.length && type !== "string") {
+
                   // Inspect recursively
                   add(arg);
                 }
@@ -3364,6 +3383,7 @@
           if (list) {
             jQuery.each(arguments, function(_, arg) {
               var index;
+              //在数组中进行剪切
               while ((index = jQuery.inArray(arg, list, index)) > -1) {
                 list.splice(index, 1);
                 // Handle firing indexes
