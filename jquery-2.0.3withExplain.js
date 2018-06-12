@@ -3295,6 +3295,25 @@
       // Flag to know if list was already fired
       fired,
       // Flag to know if list is currently firing
+      //看看flag的具体作用哈
+      //var bBtn = true;
+      //function aaa(){
+      //  alert(1);
+      //  if(bBtn){
+      //    cb.fire();
+      //    bBtn = false:
+      //  }
+      //}
+      //function bbb(){
+      //  alert(2);
+      //}
+      //var cb = $.Callbacks();
+      //cb.add(aaa);
+      //cb.add(bbb);
+      //cb.fire();
+      //防止进入死循环
+
+
       firing,
       // First callback to fire (used internally by add and fireWith)
       firingStart,
@@ -3324,6 +3343,18 @@
           }
         }
         //触发结束
+        //用来解释下面的else if(memory)
+        function aaa(){
+          alert(1);
+        }
+        function bbb(){
+          alert(2);
+        }
+        var cb = $.Callbacks();
+        cb.add(aaa)
+        cb.fire();
+        cb.add(bbb);
+        cb.fire();
         firing = false;
         if (list) {
           if (stack) {
