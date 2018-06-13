@@ -3344,17 +3344,17 @@
         }
         //触发结束
         //用来解释下面的else if(memory)
-        function aaa(){
-          alert(1);
-        }
-        function bbb(){
-          alert(2);
-        }
-        var cb = $.Callbacks();
-        cb.add(aaa)
-        cb.fire();
-        cb.add(bbb);
-        cb.fire();
+        //function aaa(){
+        //  alert(1);
+        //}
+        //function bbb(){
+        //  alert(2);
+        //}
+        //var cb = $.Callbacks('once');
+        //cb.add(aaa)
+        //cb.fire();
+        //cb.add(bbb);
+        //cb.fire();
         firing = false;
         if (list) {
           if (stack) {
@@ -3490,8 +3490,33 @@
 
     return self;
   };
+  
+  //扩展工具方法！
   jQuery.extend({
 
+    //$.Deferred()是基于$.Callbacks()开发的
+    //简单复习下callbacks
+    //var cb = $.Callbacks():
+    //setTimeout(function(){
+    //  alert(11);
+    //  cb.fire():
+
+    //},1000);
+
+    //cb.add(function(){
+    //  alert(333);
+    //})
+    //通过调用延时对象
+    //var dfb 8= $.Deferred();
+    //setTimeout(function(){
+    //  alert(111);
+    //这个rosolve相当于fire
+    //  dfb.resolve();
+    //},1000);
+    //这个done相当于callbacks的add
+    //dfd.done(function(){
+    //  alert(222);
+    //});
     Deferred: function(func) {
       var tuples = [
           // action, add listener, listener list, final state
