@@ -3577,6 +3577,7 @@
           ["notify", "progress", jQuery.Callbacks("memory")]
         ],
         state = "pending",
+        //刚一进来就出现了promise对象，里面有很多方法
         promise = {
           state: function() {
             return state;
@@ -3616,11 +3617,14 @@
           },
           // Get a promise for this deferred
           // If obj is provided, the promise aspect is added to the object
+          //有参数走前面，deferred继承到promise上面
+          //没参数走后门的promise
           promise: function(obj) {
             return obj != null ? jQuery.extend(obj, promise) :
               promise;
           }
         },
+        //deferred比如promise对象多了resolv reject和notify方法
         deferred = {};
 
       // Keep pipe for back-compat
