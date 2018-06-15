@@ -3517,9 +3517,57 @@
     //dfd.done(function(){
     //  alert(222);
     //});
+    //
+
+    //测试代码
+    //可以看到成功和失败只会触发一次
+    //setInterval(function(){
+    //  alert(111);
+    //  dfd.resolve();
+    //},1000);
+    //dfd.done(function(){
+    //  alert('成功');
+    //}).fail(function(){
+    //  alert('失败');
+    //}).progress(fucntion(){
+    //  alert('进度中')
+    //})
+
+
+    //memory的作用如下：
+    //如果不加memory那么只会触发1,加上之后
+    //1和2都会弹出来
+    //var cb = $.Callbacks('memory');
+    //cb.add(function(){
+    //  alert(1);
+    //});
+
+    //cb.fire();
+    //cb.add(function(){
+    //  alert(2);
+    //});
+
+    //第二个bbb在点击input后会立即触发，而前面的aaa不再触发
+    //setTimeout(fucntion(){
+    //  alert(111);
+    //  dif.resolve();
+    //},1000);
+    //dif.done(function(){
+    //  alert('aaa');
+    //});
+
+    //$('input').click(fucntion(){
+    //  dif.done(fucntion(){
+    //    alert('bbb');
+    //  });
+    //});
+
+
     Deferred: function(func) {
       var tuples = [
           // action, add listener, listener list, final state
+          //done和fail,progerss映射的是Calbacks里面的add
+          //resolve和reject,notiy是fire
           ["resolve", "done", jQuery.Callbacks("once memory"),
             "resolved"
           ],
@@ -3580,10 +3628,13 @@
 
       // Add list-specific methods
       jQuery.each(tuples, function(i, tuple) {
+        //进行数组遍历，数组的第二项是Callbacks
+        //数组的第三项是那个字符串
         var list = tuple[2],
           stateString = tuple[3];
 
         // promise[ done | fail | progress ] = list.add
+        //把Callbacks.add()赋值给数组的第一项
         promise[tuple[1]] = list.add;
 
         // Handle state
@@ -3602,6 +3653,7 @@
             this, arguments);
           return this;
         };
+        //把firewith赋值给数组第一项
         deferred[tuple[0] + "With"] = list.fireWith;
       });
 
