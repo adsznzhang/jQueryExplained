@@ -3582,13 +3582,17 @@
           state: function() {
             return state;
           },
+          //不论任何状态都走这个always
           always: function() {
             deferred.done(arguments)
               .fail(arguments);
+              //返回this进行链式操作
             return this;
           },
+          //then函数接受3个函数参数，第一个是完成，第二个是未完成，第三个是进度中
           then: function( /* fnDone, fnFail, fnProgress */ ) {
             var fns = arguments;
+            
             return jQuery.Deferred(function(newDefer) {
                 jQuery.each(tuples, function(i, tuple) {
                   var action = tuple[0],
@@ -3619,12 +3623,26 @@
           // If obj is provided, the promise aspect is added to the object
           //有参数走前面，deferred继承到promise上面
           //没参数走后门的promise
+          //function aaa(){
+          //  var dfd = $.Deferred();
+          //  setTimeout(function(){
+          //    dfd.resolve();
+          //  },1000);
+          //  return dfd.promise();
+          //};
+          //var newDfd = aaa();
+          //newDfd.done(function(){
+          //  alert('Successed');
+          //}).fail(function(){
+          //  alert('Failed');
+          //});
+          ////因为上面返回的是promise，promise对象并没有reject所以这个地方会报错
+          //newDfd.reject();
           promise: function(obj) {
             return obj != null ? jQuery.extend(obj, promise) :
               promise;
           }
         },
-        //deferred比如promise对象多了resolv reject和notify方法
         deferred = {};
 
       // Keep pipe for back-compat
@@ -3648,6 +3666,7 @@
             state = stateString;
 
             // [ reject_list | resolve_list ].disable; progress_list.lock
+            //^位运算符1^1代表了0，也就是done进行disable
           }, tuples[i ^ 1][2].disable, tuples[2][2].lock);
         }
 
