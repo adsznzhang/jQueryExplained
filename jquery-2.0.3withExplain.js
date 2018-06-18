@@ -3693,8 +3693,61 @@
     },
 
     // Deferred helper
+    //var dfd = $.Deferred();
+    //下面这个方法只能对一个延时对象判断成功或者失败
+    //dfd.done()
+    //举个例子来说
+    //function aaa(){
+    //  var dfd - $.Deferred();
+    //  dfd.resolve();
+    //  return dfd;
+    //};
+
+    //aaa().done(function(){
+    //  alert('成功A');
+    //});
+    //上面的代码只能对aaa进行判断
+    //让我们再添加一个延迟对象
+    //function bbb(){
+    //  var dfd = $.Deferred();
+    //  dfd.resolve();
+    //  return dfd;
+    //};
+
+    //aaa().done(function(){
+    //  alert('成功');
+    //});
+    //假如我想让aaa和bbb都完成后再触发 成功~~~~~
+    //when可以对多个延迟对象进行判断
+    //$.when(aaa(),bbb()).done(function(){
+    //  alert('成功');
+    //});
+
+
+
+    //再来看个when的详细应用
+    //function aaa(){
+    //  var dfd = $.Deferred();
+    //  dfd.resolve();
+    //  return dfd;
+    //}
+
+    //function bbb(){
+    //  var dfd = $.Deferred();
+    //  dfd.reject();
+    //  //return dfd;
+    //}
+
+    ////要注意的是aaa和bbb必须返回一个延迟对象，否则是没有done或者fail方法的
+    //$.when(aaa(),bbb()).done(function(){
+    //  alert('chenggong')
+    //}).fail(function(){
+    //  alert('失败');
+    //});
     when: function(subordinate /* , ..., subordinateN */ ) {
+      //参数的下标，类数组
       var i = 0,
+      //转换成数组并把长度存起来
         resolveValues = core_slice.call(arguments),
         length = resolveValues.length,
 
@@ -3726,6 +3779,7 @@
         progressValues = new Array(length);
         progressContexts = new Array(length);
         resolveContexts = new Array(length);
+        //判断参数是否是延迟对象，如果是就进入if，否则进入else
         for (; i < length; i++) {
           if (resolveValues[i] && jQuery.isFunction(resolveValues[i].promise)) {
             resolveValues[i].promise()
@@ -3743,6 +3797,7 @@
         deferred.resolveWith(resolveContexts, resolveValues);
       }
 
+      //在这可以看到when返回的是个promise,所以在他下面有promise的所有方法
       return deferred.promise();
     }
   });
