@@ -3801,6 +3801,10 @@
       return deferred.promise();
     }
   });
+  //
+
+  //功能检测
+  //匿名函数自执行并返回一个JSON对象
   jQuery.support = (function(support) {
     var input = document.createElement("input"),
       fragment = document.createDocumentFragment(),
@@ -3817,6 +3821,7 @@
 
     // Support: Safari 5.1, iOS 5.1, Android 4.x, Android 2.3
     // Check the default checkbox/radio value ("" on old WebKit; "on" elsewhere)
+    //checkOn值默认是on，如果不是on则是false
     support.checkOn = input.value !== "";
 
     // Must access the parent to make an option select properly
@@ -3824,6 +3829,7 @@
     support.optSelected = opt.selected;
 
     // Will be defined later
+    //赋初始值的原因是需要等待页面加载完再做判断
     support.reliableMarginRight = true;
     support.boxSizingReliable = true;
     support.pixelPosition = false;
