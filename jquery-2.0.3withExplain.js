@@ -3810,6 +3810,7 @@
       fragment = document.createDocumentFragment(),
       div = document.createElement("div"),
       select = document.createElement("select"),
+      //下拉菜单的子项
       opt = select.appendChild(document.createElement("option"));
 
     // Finish early in limited environments
@@ -3826,6 +3827,7 @@
 
     // Must access the parent to make an option select properly
     // Support: IE9, IE10
+    //IE下面的下拉菜单第一个子项默认补选中
     support.optSelected = opt.selected;
 
     // Will be defined later
@@ -3866,6 +3868,7 @@
 
     // Support: Firefox, Chrome, Safari
     // Beware of CSP restrictions (https://developer.mozilla.org/en/Security/CSP)
+    //onfocusin是支持冒泡事件的，子项会触发到父级
     support.focusinBubbles = "onfocusin" in window;
 
     div.style.backgroundClip = "content-box";
@@ -3874,9 +3877,11 @@
     support.clearCloneStyle = div.style.backgroundClip === "content-box";
 
     // Run tests that need a body at doc ready
+    //有些功能需要DOM加载完才能进行检测！下面的就是喽
     jQuery(function() {
       var container, marginDiv,
         // Support: Firefox, Android 2.3 (Prefixed box-sizing versions).
+        //content-box是标准模式，意思是盒模型下遵循标准的行为
         divReset =
         "padding:0;margin:0;border:0;display:block;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box",
         body = document.getElementsByTagName("body")[0];
@@ -3887,6 +3892,8 @@
       }
 
       container = document.createElement("div");
+      //cssText可以设置一套样式
+      //因为只是做测试，所以把页面移动到可视范围之外left：-9999px
       container.style.cssText =
         "border:0;width:0;height:0;position:absolute;top:0;left:-9999px;margin-top:1px";
 
@@ -3900,6 +3907,7 @@
 
       // Workaround failing boxSizing test due to offsetWidth returning wrong value
       // with some non-1 values of body zoom, ticket #13543
+      //设置一个CSS样式，用完之后再还原回来
       jQuery.swap(body, body.style.zoom != null ? {
         zoom: 1
       } : {}, function() {
@@ -3931,6 +3939,7 @@
           .marginRight);
       }
 
+      //检测完再删掉
       body.removeChild(container);
     });
 
