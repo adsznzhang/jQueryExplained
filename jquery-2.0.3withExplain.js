@@ -3908,6 +3908,7 @@
       // Workaround failing boxSizing test due to offsetWidth returning wrong value
       // with some non-1 values of body zoom, ticket #13543
       //设置一个CSS样式，用完之后再还原回来
+      //style.zoom页面放大缩小
       jQuery.swap(body, body.style.zoom != null ? {
         zoom: 1
       } : {}, function() {
@@ -3916,6 +3917,7 @@
 
       // Use window.getComputedStyle because jsdom on node.js will break without it.
       if (window.getComputedStyle) {
+        //检测浏览器是否会把像素位置转换成像素值
         support.pixelPosition = (window.getComputedStyle(div, null) ||
             {})
           .top !== "1%";
@@ -3934,6 +3936,7 @@
         marginDiv.style.marginRight = marginDiv.style.width = "0";
         div.style.width = "1px";
 
+        //看改变父级宽度是否影响子集的0宽度
         support.reliableMarginRight = !parseFloat((window.getComputedStyle(
             marginDiv, null) || {})
           .marginRight);
@@ -3957,6 +3960,26 @@
   	5. Avoid exposing implementation details on user objects (eg. expando properties)
   	6. Provide a clear path for implementation upgrade to WeakMap in 2014
   */
+  //数据缓存
+  //基本使用方法
+//  $(function(){
+//    $('#div1').attr('name','hello');
+//    alert($('#div1').attr('name'));
+//  });
+//<div id="div1"></div>
+//上面的attr方法可以换成prop和data方法。具体的不同来听听我的讲解
+//attr方法是通过原生对象下面的getAttribute方法来实现的
+//prop是直接在对象上添加.name属性
+//data方法更适合大量数据挂载到对象上面，要注意一个非常重要的问题：
+//DOM元素和对象之间的互相引用，大部分浏览器会出现内存泄漏！
+//var oDiv = document.getElementById('div1');
+//var obj = {}
+//oDiv.name = obj;
+//obj.age = oDiv;
+//通过一个cache中介对象来避免互相引用
+
+
+$('#div1').data('name',obj);
   var data_user, data_priv,
     rbrace = /(?:\{[\s\S]*\}|\[[\s\S]*\])$/,
     rmultiDash = /([A-Z])/g;
