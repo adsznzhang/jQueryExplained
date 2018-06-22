@@ -3984,6 +3984,7 @@ $('#div1').data('name',obj);
     rbrace = /(?:\{[\s\S]*\}|\[[\s\S]*\])$/,
     rmultiDash = /([A-Z])/g;
 
+    //构造函数
   function Data() {
     // Support: Android < 4,
     // Old WebKit does not have Object.preventExtensions/freeze method,
@@ -4010,6 +4011,7 @@ $('#div1').data('name',obj);
       owner.nodeType === 1 || owner.nodeType === 9 : true;
   };
 
+  //构造函数 原型
   Data.prototype = {
     key: function(owner) {
       // We can accept data for non-element nodes in modern browsers,
@@ -4199,6 +4201,7 @@ $('#div1').data('name',obj);
     }
   });
 
+  //在jquery对象上扩展方法
   jQuery.fn.extend({
     data: function(key, value) {
       var attrs, name,
