@@ -3989,17 +3989,21 @@ $('#div1').data('name',obj);
     // Support: Android < 4,
     // Old WebKit does not have Object.preventExtensions/freeze method,
     // return new empty object instead with no [[set]] accessor
+    //只能获取不能设置
+    //0这个参数的作用相当于0：{}
     Object.defineProperty(this.cache = {}, 0, {
       get: function() {
         return {};
       }
     });
 
+    //生成唯一的标识
     this.expando = jQuery.expando + Math.random();
   }
 
   Data.uid = 1;
 
+  //判断节点类型
   Data.accepts = function(owner) {
     // Accepts only:
     //  - Node
@@ -4012,11 +4016,17 @@ $('#div1').data('name',obj);
   };
 
   //构造函数 原型
+  //比如下面的这个语句如何分配
+  //$.data(document.body,'age',30);
+  //如果我们再次添加另一个属性在同一个对象上面如：
+  //$.data(document.body,'job','it');
+  //可以看到的是return的unlock是1，在1下面有age和job两个属性
   Data.prototype = {
     key: function(owner) {
       // We can accept data for non-element nodes in modern browsers,
       // but we should not, see #8335.
       // Always return the key for a frozen object.
+      //当不是元素节点的时候返回0,就会找到上面空的json
       if (!Data.accepts(owner)) {
         return 0;
       }
@@ -4029,6 +4039,7 @@ $('#div1').data('name',obj);
       if (!unlock) {
         unlock = Data.uid++;
 
+        //让唯一标识无法修改
         // Secure it in a non-enumerable, non-writable property
         try {
           descriptor[this.expando] = {
@@ -4038,6 +4049,7 @@ $('#div1').data('name',obj);
 
           // Support: Android < 4
           // Fallback to a less secure definition
+          //使用传统方法来添加
         } catch (e) {
           descriptor[this.expando] = unlock;
           jQuery.extend(owner, descriptor);
@@ -4056,14 +4068,29 @@ $('#div1').data('name',obj);
         // There may be an unlock assigned to this node,
         // if there is no entry for this "owner", create one inline
         // and set the unlock as though an owner entry had always existed
+        //var cache = {
+        //  1: {
+        //    name: obj
+        //  },
+        //  2:{
+        //    age: obj
+        //  }
+        //}
+        //先找到ID也就是元素的标识
         unlock = this.key(owner),
+        //然后再通过ID找到对应的JSON
         cache = this.cache[unlock];
 
       // Handle: [ owner, key, value ] args
+      //字符串进入if
       if (typeof data === "string") {
         cache[data] = value;
 
         // Handle: [ owner, { properties } ] args
+        //else 处理的是其他类型比如
+
+        //$.data(document.body, {'agel': 30, 'job': 'it'});
+
       } else {
         // Fresh assignments by object are shallow copied
         if (jQuery.isEmptyObject(cache)) {
@@ -4077,6 +4104,7 @@ $('#div1').data('name',obj);
       }
       return cache;
     },
+    //获取属性值拉
     get: function(owner, key) {
       // Either a valid cache is found, or will be created.
       // New caches will be created and the unlock returned,
@@ -4087,6 +4115,7 @@ $('#div1').data('name',obj);
       return key === undefined ?
         cache : cache[key];
     },
+    //
     access: function(owner, key, value) {
       var stored;
       // In cases where either:
@@ -4164,6 +4193,7 @@ $('#div1').data('name',obj);
         this.cache[owner[this.expando]] || {}
       );
     },
+    //删除的是key等于1或者2这个整体
     discard: function(owner) {
       if (owner[this.expando]) {
         delete this.cache[owner[this.expando]];
