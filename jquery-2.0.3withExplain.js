@@ -4235,22 +4235,33 @@ $('#div1').data('name',obj);
   jQuery.fn.extend({
     data: function(key, value) {
       var attrs, name,
+      //如果是一组，只寻找这一组中的第一个元素
         elem = this[0],
         i = 0,
         data = null;
 
       // Gets all values
+      //当key是空的时候，默认返回所有的值
+      //比如
+      //$('#div1').data('name','hello');
+      //$('#div1').data('age','30');
+      //console.log($('#div1').data())
       if (key === undefined) {
         if (this.length) {
           data = data_user.get(elem);
 
+          //H5里面的自定义属性比如
+
+          //<div id="div1" data-zhen-all="wocao" class="box">aaa<div>
           if (elem.nodeType === 1 && !data_priv.get(elem,
               "hasDataAttrs")) {
+                //获取属性名字
             attrs = elem.attributes;
             for (; i < attrs.length; i++) {
               name = attrs[i].name;
 
               if (name.indexOf("data-") === 0) {
+                //转成驼峰名字
                 name = jQuery.camelCase(name.slice(5));
                 dataAttr(elem, name, data[name]);
               }
@@ -4281,11 +4292,13 @@ $('#div1').data('name',obj);
         if (elem && value === undefined) {
           // Attempt to get data from the cache
           // with the key as-is
+          //是什么名字就获取什么名字
           data = data_user.get(elem, key);
           if (data !== undefined) {
             return data;
           }
 
+          //把名字转换成驼峰形式来寻找
           // Attempt to get data from the cache
           // with the key camelized
           data = data_user.get(elem, camelKey);
@@ -4308,6 +4321,16 @@ $('#div1').data('name',obj);
         this.each(function() {
           // First, attempt to store a copy or reference of any
           // data that might've been store with a camelCased key.
+          //处理的情况如下：
+          //$('#div1').data('nameAge','hello');
+          //$('#div1').data('name-age','hello');
+          ////在缓存下按下面方式储存
+          //this.cache ={
+          //  1: {
+          //    'nameAge' : 'hello',
+          //    'name-age' : 'hello'
+          //  }
+          //}
           var data = data_user.get(this, camelKey);
 
           // For HTML5 data-* attribute interop, we have to
@@ -4322,6 +4345,7 @@ $('#div1').data('name',obj);
             data_user.set(this, key, value);
           }
         });
+        //arguments.length>1如果一个参数是获取操作，否则是设置操作
       }, null, value, arguments.length > 1, null, true);
     },
 
