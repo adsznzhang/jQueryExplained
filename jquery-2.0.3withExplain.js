@@ -4385,7 +4385,28 @@ $('#div1').data('name',obj);
     }
     return data;
   }
+  //工具方法的扩展
   jQuery.extend({
+    //使用例子
+    //$(function(){
+    //  function aaa(){
+    //    alert(1);
+    //  }
+    //  function bbb(){
+    //    alert(222);
+    //  }
+
+
+    //  $.queue(document,'q1',aaa);
+    //  $.queue(document,'q1',bbb);
+    //或者是整体添加队列
+    //$.queue(document,'q1',[aaa,bbb])
+    //  console.log($.queue(document, 'q1'));
+    //});
+
+    //queue里面传的必须是函数
+
+
     queue: function(elem, type, data) {
       var queue;
 
@@ -4405,6 +4426,36 @@ $('#div1').data('name',obj);
       }
     },
 
+    //取出队列里面的函数并且还调用了！
+    //实际情况下为什么要使用queue
+   // $(fucntion(){
+   //   $('#div1').click(fucntion(){
+   //     //如果是js源码的话会使用setInterval异步调用，也就是说会同时执行
+   //     $(this).animate({width: 400},2000);
+   //     $(this).animate({height: 400},2000);
+   //     $(this).animate({left: 400},2000);
+   //   })
+   // })
+   //$(this).animate({width: 300},2000).queue(fucntion(next){
+   //  //必须有出队才能继续执行后续的animate
+   //  //$(this).dequeue();
+   //  //next()这个next就等于上面的语句;
+   //}).animate({left: 300},2000);
+
+
+
+   //另一个例子回调和queue的区别
+   //$(this).animate({width:300},2000,function(){
+   //  var This = this;
+   //  var timer = setInterval(function(){
+   //    This.style.height = This.offsetHeight + 1 + 'px';
+   //    if(This.offsetHeight == 200){
+   //      clearInterval(timer);
+   //    }
+   //  },30);
+   //}).animate({left: 300},2000);
+   //高度和左移动会同时发生，我们没法控制
+   //而通过queue可以随时控制高度发生在哪个地方！！
     dequeue: function(elem, type) {
       type = type || "fx";
 
