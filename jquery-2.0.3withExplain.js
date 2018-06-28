@@ -4410,14 +4410,18 @@ $('#div1').data('name',obj);
     queue: function(elem, type, data) {
       var queue;
 
+      //当元素存在进入if
       if (elem) {
+        //队列名字默认fx，且所有队列有一个queue结尾
         type = (type || "fx") + "queue";
         queue = data_priv.get(elem, type);
 
         // Speed up dequeue by getting out quickly if this is just a lookup
         if (data) {
+          //第一次没有队列的时候创建一个新的队列,如果是数组也重新进行设置！
           if (!queue || jQuery.isArray(data)) {
             queue = data_priv.access(elem, type, jQuery.makeArray(data));
+            //有的话就直接push到存在的队列里面！
           } else {
             queue.push(data);
           }
@@ -4459,10 +4463,12 @@ $('#div1').data('name',obj);
     dequeue: function(elem, type) {
       type = type || "fx";
 
+      //先获取队列长度
       var queue = jQuery.queue(elem, type),
         startLength = queue.length,
         fn = queue.shift(),
         hooks = jQuery._queueHooks(elem, type),
+        //可以看到next正是dequeue
         next = function() {
           jQuery.dequeue(elem, type);
         };
@@ -4513,7 +4519,9 @@ $('#div1').data('name',obj);
         setter--;
       }
 
+      //根据参数长度判断是否获取还是设置！小于setter是获取操作
       if (arguments.length < setter) {
+        //可以看到它获取的是一组当中的第一个元素
         return jQuery.queue(this[0], type);
       }
 
@@ -4525,6 +4533,7 @@ $('#div1').data('name',obj);
           // ensure a hooks for this queue
           jQuery._queueHooks(this, type);
 
+          //入队后立即出队运行！
           if (type === "fx" && queue[0] !== "inprogress") {
             jQuery.dequeue(this, type);
           }
@@ -4537,10 +4546,17 @@ $('#div1').data('name',obj);
     },
     // Based off of the plugin by Clint Helfers, with permission.
     // http://blindsignals.com/index.php/2009/07/jquery-delay/
+    //使用方法介绍：
+    //$(fucntion(){
+    //  $('#div1').click(fucntion(){
+    //    $(this).animate({width: 300},2000).delay(2000).animate({left: 300},2000);
+    //  })
+    //})
     delay: function(time, type) {
       time = jQuery.fx ? jQuery.fx.speeds[time] || time : time;
       type = type || "fx";
 
+      //next是出队，time是延迟时间
       return this.queue(type, function(next, hooks) {
         var timeout = setTimeout(next, time);
         hooks.stop = function() {
@@ -4553,11 +4569,18 @@ $('#div1').data('name',obj);
     },
     // Get a promise resolved when queues of a certain type
     // are emptied (fx is the type by default)
+    //使用方法介绍：
+    //全部队列执行之后再调用的一个方法
+    //$(this).promise().done(fucntion(){
+    //  alert(3);
+    //});
     promise: function(type, obj) {
       var tmp,
         count = 1,
+        //建立defer对象
         defer = jQuery.Deferred(),
         elements = this,
+        //计数共有多少个需要执行的队列
         i = this.length,
         resolve = function() {
           if (!(--count)) {
@@ -4579,6 +4602,7 @@ $('#div1').data('name',obj);
         }
       }
       resolve();
+      //返回对象
       return defer.promise(obj);
     }
   });
