@@ -4611,14 +4611,40 @@ $('#div1').data('name',obj);
     rreturn = /\r/g,
     rfocusable = /^(?:input|select|textarea|button)$/i;
 
+    //总共有以下几种实例方法
+    //attr
+    //removeAttr
+    //prop
+    //removeProp
+    //addClass
+    //removeClass
+    //toggleClass
+    //hasClass
+    //val
+
+    //基本使用
+    //$(function(){
+    //  $('#div1').attr('title','hello');
+    //  //一个参数是获取属性
+    //  alert($('#div1').attr('id'));
+    //});
+    
+
+    //prop和attr的区别主要是要理解原生代码中的
+    //setAttribute和. | []
+    //attr用的是setAttribute 而prop用的是.和[]来设置属性
+    //他们两者的主要区别是自定义属性的设置，setAttribute可以方便的设置自定义属性
+
   jQuery.fn.extend({
     attr: function(name, value) {
+      //可以看到jQuery.attr作为回调函数被调用了
       return jQuery.access(this, jQuery.attr, name, value, arguments.length >
         1);
     },
 
     removeAttr: function(name) {
       return this.each(function() {
+        //调用工具中的removeAttr
         jQuery.removeAttr(this, name);
       });
     },
@@ -4926,6 +4952,7 @@ $('#div1').data('name',obj);
         nType = elem.nodeType;
 
       // don't get/set attributes on text, comment and attribute nodes
+      //无法设置属性的对象
       if (!elem || nType === 3 || nType === 8 || nType === 2) {
         return;
       }
