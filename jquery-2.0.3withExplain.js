@@ -4958,23 +4958,36 @@ $('#div1').data('name',obj);
       }
 
       // Fallback to prop when attributes are not supported
+      //举例子$(document).attr('title','hello')
       if (typeof elem.getAttribute === core_strundefined) {
         return jQuery.prop(elem, name, value);
       }
 
       // All attributes are lowercase
       // Grab necessary hook if one is defined
+      //元素节点或者sizzle里面的isXML，是不是XML下的结点
       if (nType !== 1 || !jQuery.isXMLDoc(elem)) {
         name = name.toLowerCase();
         hooks = jQuery.attrHooks[name] ||
+        //调用sizzle下的方法
+        
+        //<input type="checkbox" checked="checked">
+        //alert($('input').attr('checked'));
+        //prop会弹出true
+        //alert($('input').prop('checked'));
+        //对下面的情况做兼容
+        //$('input').attr('checked','checked')
+        //$('input').attr('checked',true)
           (jQuery.expr.match.bool.test(name) ? boolHook : nodeHook);
       }
 
       if (value !== undefined) {
 
+        //$('#div1').attr('title',null)调用的是删除属性
         if (value === null) {
           jQuery.removeAttr(elem, name);
 
+          //hooks存在并且有set
         } else if (hooks && "set" in hooks && (ret = hooks.set(elem,
             value, name)) !== undefined) {
           return ret;
@@ -4989,6 +5002,7 @@ $('#div1').data('name',obj);
         return ret;
 
       } else {
+        //调用是sizzle下的attr方法
         ret = jQuery.find.attr(elem, name);
 
         // Non-existent attributes return null, we normalize to undefined
@@ -5019,8 +5033,10 @@ $('#div1').data('name',obj);
     },
 
     attrHooks: {
+      //只有一个set，get不存在兼容
       type: {
         set: function(elem, value) {
+          //必须是单选框才能进入if
           if (!jQuery.support.radioValue && value === "radio" && jQuery
             .nodeName(elem, "input")) {
             // Setting the type on a radio button after the value resets the value in IE6-9
