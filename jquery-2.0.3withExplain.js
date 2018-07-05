@@ -4660,12 +4660,22 @@ $('#div1').data('name',obj);
       });
     },
 
+    //基本使用
+    //$(fucntion(){
+    //  $('#div1').addClass('box2 box4');
+    //  $('#div1').removeClass('box3');
+    //  //如果原先没有那个属性，则先调用addClass
+    //  $('#div1').toggleClass('box2');
+    //alert($('#div1').hasClass('box2'));
+    //})
     addClass: function(value) {
       var classes, elem, cur, clazz, j,
         i = 0,
         len = this.length,
+        //判断参数类型是否是字符串
         proceed = typeof value === "string" && value;
 
+        //判断是否是函数,如果是函数则对每个对象调用
       if (jQuery.isFunction(value)) {
         return this.each(function(j) {
           jQuery(this)
@@ -4673,15 +4683,19 @@ $('#div1').data('name',obj);
         });
       }
 
+      //字符串类型进入if
       if (proceed) {
         // The disjunction here is for better compressibility (see removeClass)
+        //通过正则根据空格分成数组
         classes = (value || "")
           .match(core_rnotwhite) || [];
 
+          //对数组进行循环
         for (; i < len; i++) {
           elem = this[i];
           cur = elem.nodeType === 1 && (elem.className ?
             (" " + elem.className + " ")
+            //把制表符 换行符 通过正则变成空格！可以查看rclass这个正则对象
             .replace(rclass, " ") :
             " "
           );
@@ -4689,6 +4703,7 @@ $('#div1').data('name',obj);
           if (cur) {
             j = 0;
             while ((clazz = classes[j++])) {
+              //判断是否添加属性！
               if (cur.indexOf(" " + clazz + " ") < 0) {
                 cur += clazz + " ";
               }
@@ -4699,6 +4714,8 @@ $('#div1').data('name',obj);
         }
       }
 
+      //方便链式操作
+      //$('#div1').addClass('box3').html('bbbb').click(function(){alert(123)});
       return this;
     },
 
@@ -5015,10 +5032,12 @@ $('#div1').data('name',obj);
     removeAttr: function(elem, value) {
       var name, propName,
         i = 0,
+        //搜索非空格元素
         attrNames = value && value.match(core_rnotwhite);
 
       if (attrNames && elem.nodeType === 1) {
         while ((name = attrNames[i++])) {
+          //把class关键字变成className
           propName = jQuery.propFix[name] || name;
 
           // Boolean attributes get special treatment (#10870)
@@ -5057,6 +5076,7 @@ $('#div1').data('name',obj);
       "class": "className"
     },
 
+    //实例中的prop就是工具中的prop
     prop: function(elem, name, value) {
       var ret, hooks, notxml,
         nType = elem.nodeType;
@@ -5089,6 +5109,7 @@ $('#div1').data('name',obj);
     },
 
     propHooks: {
+      //改变tab键光标的移动顺序
       tabIndex: {
         get: function(elem) {
           return elem.hasAttribute("tabindex") || rfocusable.test(elem.nodeName) ||
