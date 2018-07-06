@@ -4723,6 +4723,7 @@ $('#div1').data('name',obj);
       var classes, elem, cur, clazz, j,
         i = 0,
         len = this.length,
+        //优先级,先&&后||，如果参数为空则删除所有属性
         proceed = arguments.length === 0 || typeof value === "string" &&
         value;
 
@@ -4761,6 +4762,9 @@ $('#div1').data('name',obj);
       return this;
     },
 
+    //如果一个参数就在元素里面查找如果有！就删除，没有就添加~，如果有第二个参数true，则其作用
+    //相当于addClass
+    //$('#div1').toggleClass('box2 box3 ', true);
     toggleClass: function(value, stateVal) {
       var type = typeof value;
 
@@ -4825,12 +4829,35 @@ $('#div1').data('name',obj);
       return false;
     },
 
+    //操作元素的值
+    //使用方法
+    //不写参数就是获取，带有参数就是修改
+    //$(function(){
+    //  alert($('#input1').val());
+    //})
+    //<input type="text" id="input1" value="hello">
+
     val: function(value) {
       var hooks, ret, isFunction,
         elem = this[0];
 
+        //参数等于0的操作
       if (!arguments.length) {
         if (elem) {
+          //先找元素类型，再找元素节点类型
+//          <select>
+//            <option>111</option>
+//            <option>222</option>
+//            <option>333</option>
+//          </select>
+//
+//          <input type="checkbox" id="input2">
+
+          //select一种是多选一种是单选，它会返回select-1
+          //alert($('select').get(0).type);
+          //option不具备type的操作，但它有节点名字
+
+
           hooks = jQuery.valHooks[elem.type] || jQuery.valHooks[elem.nodeName
             .toLowerCase()];
 
@@ -4892,6 +4919,7 @@ $('#div1').data('name',obj);
 
   jQuery.extend({
     valHooks: {
+      //下拉菜单子选项
       option: {
         get: function(elem) {
           // attributes.value is undefined in Blackberry 4.7 but
@@ -4900,6 +4928,7 @@ $('#div1').data('name',obj);
           return !val || val.specified ? elem.value : elem.text;
         }
       },
+      //下拉菜单
       select: {
         get: function(elem) {
           var value, option,
