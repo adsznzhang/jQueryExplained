@@ -4854,6 +4854,7 @@ $('#div1').data('name',obj);
 //          <input type="checkbox" id="input2">
 
           //select一种是多选一种是单选，它会返回select-1
+          //可以通过在select里面设置multiple成为多选
           //alert($('select').get(0).type);
           //option不具备type的操作，但它有节点名字
 
@@ -4878,6 +4879,7 @@ $('#div1').data('name',obj);
         return;
       }
 
+      //判断参数是否是回调函数，如果是则对每一个元素执行
       isFunction = jQuery.isFunction(value);
 
       return this.each(function(i) {
@@ -4887,6 +4889,7 @@ $('#div1').data('name',obj);
           return;
         }
 
+        //执行回调函数
         if (isFunction) {
           val = value.call(this, i, jQuery(this)
             .val());
@@ -4924,6 +4927,7 @@ $('#div1').data('name',obj);
         get: function(elem) {
           // attributes.value is undefined in Blackberry 4.7 but
           // uses .value. See #6932
+          
           var val = elem.attributes.value;
           return !val || val.specified ? elem.value : elem.text;
         }
@@ -4958,11 +4962,13 @@ $('#div1').data('name',obj);
                 .val();
 
               // We don't need an array for one selects
+              //单选
               if (one) {
                 return value;
               }
 
               // Multi-Selects return an array
+              //多选PUSH到数组里面
               values.push(value);
             }
           }
@@ -4970,6 +4976,7 @@ $('#div1').data('name',obj);
           return values;
         },
 
+        //设置的操作
         set: function(elem, value) {
           var optionSet, option,
             options = elem.options,
@@ -5217,6 +5224,8 @@ $('#div1').data('name',obj);
   jQuery.each(["radio", "checkbox"], function() {
     jQuery.valHooks[this] = {
       set: function(elem, value) {
+        //检测是否是数组，如果是数组则进行对比，
+        //然后如果存在则把radio和checkbox设置为选中状态
         if (jQuery.isArray(value)) {
           return (elem.checked = jQuery.inArray(jQuery(elem)
             .val(), value) >= 0);
@@ -5227,6 +5236,7 @@ $('#div1').data('name',obj);
       jQuery.valHooks[this].get = function(elem) {
         // Support: Webkit
         // "" is returned instead of "on" if a value isn't specified
+        //设置value的默认值，做兼容处理
         return elem.getAttribute("value") === null ? "on" : elem.value;
       };
     }
