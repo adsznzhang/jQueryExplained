@@ -5260,10 +5260,56 @@ $('#div1').data('name',obj);
     } catch (err) {}
   }
 
+  //事件操作，一个非常重要的一部分！
   /*
    * Helper functions for managing events -- not part of the public interface.
    * Props to Dean Edwards' addEvent library for many of the ideas.
    */
+  //先整体框架，大架子
+  //jQuery.event = {
+  //  global,
+  //  add,
+  //  remove,
+  //  trigger,
+  //  dispatch,
+  //  handlers,
+  //  props,
+  //  fixHooks,
+  //  keyHooks,
+  //  mouseHooks,
+  //  fix,
+  //  special,
+  //  simulate
+  //}
+  //jQuery.Event = function(){
+  //  isDefaultPrevented,
+  //  isPropagationStopped,
+  //  isImmediatePropagationStopped,
+  //  preventDefault,
+  //  stopPropagation,
+  //  stopImmediatePropagation
+  //}
+  //jQuery.fn.extend({
+  //  on,
+  //  one,
+  //  off,
+  //  trigger,
+  //  triggerHandler
+  //})
+  //on指向event下面的add
+  //上面的one也是指向on,trigger和triggerHandler都指向内部event的trigger，根据参数不同调用不同
+  //off调用event下的remove
+  //所以说内部事件方法最重要的三个是add，remove和trigger
+  //以上就是简化的结构
+  //大约在源代码的6720行，有额外的实例方法的扩展可以看到：
+  //jQuery.fn.extend({
+  //  hover,
+  //  bind,
+  //  unbind,
+  //  delegate,
+  //  undelegate
+  //})
+  //上面的hover指向on，bind指向on，unbind指向off，delegate指向on，undelegate指向on
   jQuery.event = {
 
     global: {},
@@ -7798,6 +7844,7 @@ $('#div1').data('name',obj);
       add(prefix, obj);
     }
   }
+  //可以看到根据参数的不同，调用的函数可能会是On
   jQuery.each((
       "blur focus focusin focusout load resize scroll unload click dblclick " +
       "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
