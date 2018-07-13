@@ -5310,6 +5310,14 @@ $('#div1').data('name',obj);
   //  undelegate
   //})
   //上面的hover指向on，bind指向on，unbind指向off，delegate指向on，undelegate指向on
+  //on是非常重要的
+  //首先是使用方法
+
+  //$(function(){
+  //  $('#div1').on('click',function(){
+  //    alert(123);
+  //  });
+  //});
   jQuery.event = {
 
     global: {},
@@ -6060,8 +6068,20 @@ $('#div1').data('name',obj);
     });
   }
 
+  //on的这个位置。。。
   jQuery.fn.extend({
 
+    //data参数可以在ev下面找到，这个参数用来数据
+    //$(fucntion(){
+    //  $('#div1').on('click',{name:'hello'},function(){
+    //    alert(ev.data.name);
+    //  });
+    //});
+    //事件委托
+    //$('#div1').delegate('li','click',{name:'hello'},fucntion(){
+    //  $(this).css('background','red');
+    //})当你看下delegate的实现的时候就发现，它调用的就是on只不过是把参数换了下位置！
+    //第五个参数是内部使用，
     on: function(types, selector, data, fn, /*INTERNAL*/ one) {
       var origFn, type;
 
@@ -6079,12 +6099,15 @@ $('#div1').data('name',obj);
         return this;
       }
 
+      //修正参数的位置，因为有时候我们会只写两个参数！
       if (data == null && fn == null) {
+        //两个参数
         // ( types, fn )
         fn = selector;
         data = selector = undefined;
       } else if (fn == null) {
         if (typeof selector === "string") {
+          //三个参数的时候
           // ( types, selector, fn )
           fn = data;
           data = undefined;
@@ -7855,6 +7878,7 @@ $('#div1').data('name',obj);
       // Handle event binding
       jQuery.fn[name] = function(data, fn) {
         return arguments.length > 0 ?
+        //可以看到，这里没有委托的行为，只可以传数据！
           this.on(name, null, data, fn) :
           this.trigger(name);
       };
@@ -7867,6 +7891,7 @@ $('#div1').data('name',obj);
     },
 
     bind: function(types, data, fn) {
+      //也是没有委托的，
       return this.on(types, null, data, fn);
     },
     unbind: function(types, fn) {
