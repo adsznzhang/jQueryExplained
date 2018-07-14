@@ -6086,6 +6086,15 @@ $('#div1').data('name',obj);
       var origFn, type;
 
       // Types can be a map of types/handlers
+      //能进入if是：
+      //$('#div1').on({
+      //  'click':function () {
+      //    alert(123);
+      //  },
+      //  'mouseover': function () {
+      //    alert(456) 
+      //  }
+      //});
       if (typeof types === "object") {
         // ( types-Object, selector, data )
         if (typeof selector !== "string") {
@@ -6093,6 +6102,7 @@ $('#div1').data('name',obj);
           data = data || selector;
           selector = undefined;
         }
+        //进行for in 循环，拆解对象
         for (type in types) {
           this.on(type, selector, data, types[type], one);
         }
@@ -6124,10 +6134,13 @@ $('#div1').data('name',obj);
         return this;
       }
 
+      //让事件只执行一次！
       if (one === 1) {
         origFn = fn;
         fn = function(event) {
           // Can use an empty set, since event contains the info
+          //这个地方不理解的原因是，它为什么是执行一次！
+          //你明明首先把事件给取消了，后面又调用了。。。
           jQuery()
             .off(event);
           return origFn.apply(this, arguments);
@@ -6142,6 +6155,7 @@ $('#div1').data('name',obj);
     one: function(types, selector, data, fn) {
       return this.on(types, selector, data, fn, 1);
     },
+    //事件取消，
     off: function(types, selector, fn) {
       var handleObj, type;
       if (types && types.preventDefault && types.handleObj) {
@@ -6156,6 +6170,7 @@ $('#div1').data('name',obj);
           );
         return this;
       }
+      //对象参数的处理
       if (typeof types === "object") {
         // ( types-object [, selector] )
         for (type in types) {
@@ -6176,6 +6191,14 @@ $('#div1').data('name',obj);
       });
     },
 
+    //trigger使用方式
+    //$('#input1').focus(fucntion(){
+    //  $(this).css('background','red');
+    //})
+    //$('#input1').trigger('focus')
+    //triggerHandler不会触发当前事件的默认行为
+    //$('#input1').triggerHandler('focus')
+    
     trigger: function(type, data) {
       return this.each(function() {
         jQuery.event.trigger(type, data, this);
