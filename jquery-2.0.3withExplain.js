@@ -5322,6 +5322,66 @@ $('#div1').data('name',obj);
 
     global: {},
 
+    //add 使用例子：
+    //$(function(){
+    //  $('#div1').on('click',function(){
+    //    alert(1);
+    //  });
+    //   $('#div1').on('click',function(){
+    //    alert(2);
+    //  });
+
+    //  //主动触发,会把绑定到click事件上所有的操作都会触发！
+    //  $('#div1').trigger('click')
+    //自定义事件，只能通过trigger来触发
+    //$('#div1').on('show',function(){
+    //  alert(1);
+    //});
+    //自定义事件看起来非常像函数，但最大的不同是，相同名字的事件不会覆盖！
+    //$('#div1').trigger('show');
+    //  
+    //});
+    //下面通过原生JS来实现：
+   // window.onload = function(){
+   //   var oDiv = document.getElementById('div1');
+   //   var oSpan = document.getElementById('span1');
+
+   //   var aaa = function() {
+   //     alert(1);
+   //   }
+
+   //   var bbb = function() {
+   //     alert(2);
+   //   }
+
+   //   add(oDiv, 'click', aaa);
+   //   remove(oDiv, 'click',aaa);
+   //   add(oSpan,'show',aaa);
+   //   add(oSpan,'show',bbb);
+
+   //   trigger(oSpan,'show')
+   // }
+
+   // function add(obj,types,fn){
+   //   obj.listeners = obj.listeners || {};
+   //   obj.listeners[types] = obj.listeners[types] || [];
+   //   obj.listeners[types].push(fn);
+   //   obj.addEventListener(types,fn,false);
+   // };
+
+   // function remove(obj,types,fn){
+   //   obj.removeEventListener(types,fn,false);
+   //delete obj.listeners[types]
+   // }
+
+   // function trigger(obj,types){
+   //   var arr =  obj.listeners[types];
+   //   for(var i = 0; i < arr.length; i++){
+   //     arr[i]()
+   //   }
+   // }
+
+
     add: function(elem, types, handler, data, selector) {
 
       var handleObjIn, eventHandle, tmp,
