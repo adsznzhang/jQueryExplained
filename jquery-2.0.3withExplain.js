@@ -5387,6 +5387,9 @@ $('#div1').data('name',obj);
       var handleObjIn, eventHandle, tmp,
         events, t, handleObj,
         special, handlers, type, namespaces, origType,
+        //上面原生js我们把数据都挂载到我们当前操作的 元素了，如果操作的元素非常多
+        //那么必定会占用很多内存空间，
+        //所有更好的方法就是都存到数据缓存对象中
         elemData = data_priv.get(elem);
 
       // Don't attach events to noData or text/comment nodes (but allow plain objects)
@@ -5407,6 +5410,7 @@ $('#div1').data('name',obj);
       }
 
       // Init the element's event structure and main handler, if this is the first
+      //这句相当于上面的原生的obj.listenner = {}
       if (!(events = elemData.events)) {
         events = elemData.events = {};
       }
@@ -5463,6 +5467,7 @@ $('#div1').data('name',obj);
         }, handleObjIn);
 
         // Init the event handler queue if we're the first
+        //这句相当于原生的obj.listener[types] = []
         if (!(handlers = events[type])) {
           handlers = events[type] = [];
           handlers.delegateCount = 0;
@@ -5471,6 +5476,7 @@ $('#div1').data('name',obj);
           if (!special.setup || special.setup.call(elem, data, namespaces,
               eventHandle) === false) {
             if (elem.addEventListener) {
+              //绑定事件
               elem.addEventListener(type, eventHandle, false);
             }
           }
@@ -5488,6 +5494,7 @@ $('#div1').data('name',obj);
         if (selector) {
           handlers.splice(handlers.delegateCount++, 0, handleObj);
         } else {
+          //这句相当于原生的obj.listener[types].push(fn)
           handlers.push(handleObj);
         }
 
@@ -5564,6 +5571,7 @@ $('#div1').data('name',obj);
         if (origCount && !handlers.length) {
           if (!special.teardown || special.teardown.call(elem, namespaces,
               elemData.handle) === false) {
+                //和原生的相对应
             jQuery.removeEvent(elem, type, elemData.handle);
           }
 
@@ -5657,6 +5665,7 @@ $('#div1').data('name',obj);
 
       // Fire handlers on the event path
       i = 0;
+      //上面原生我们用for in循环，这里用的是while
       while ((cur = eventPath[i++]) && !event.isPropagationStopped()) {
 
         event.type = i > 1 ?
@@ -5666,6 +5675,7 @@ $('#div1').data('name',obj);
         // jQuery handler
         handle = (data_priv.get(cur, "events") || {})[event.type] &&
           data_priv.get(cur, "handle");
+          //当函数存在则执行
         if (handle) {
           handle.apply(cur, data);
         }
