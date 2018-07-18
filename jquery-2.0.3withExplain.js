@@ -5455,14 +5455,28 @@ $('#div1').data('name',obj);
 
         // handleObj is passed to all event handlers
         handleObj = jQuery.extend({
+          //现在的类型
           type: type,
+          //原来的类型
           origType: origType,
           data: data,
+          //handler绑定的是事件函数
           handler: handler,
           guid: handler.guid,
           selector: selector,
+          //有委托就false,没有的话就是undefined
           needsContext: selector && jQuery.expr.match.needsContext.test(
             selector),
+            //命名空间
+            //下面的有命名空间
+         // $('#div1').on('click.aaa',function(){
+         //   alert(1);
+         // })
+         // $('#div1').on('click',function(){
+         //   alert(2);
+         // })
+         // //这样的话只会调用clcik.aaa
+         // $('#div1').trigger('click.aaa');
           namespace: namespaces.join(".")
         }, handleObjIn);
 
@@ -5784,6 +5798,7 @@ $('#div1').data('name',obj);
       return event.result;
     },
 
+    //真正的事件函数
     handlers: function(event, handlers) {
       var i, matches, sel, handleObj,
         handlerQueue = [],
