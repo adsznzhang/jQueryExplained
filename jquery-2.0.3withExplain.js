@@ -5877,10 +5877,17 @@ $('#div1').data('name',obj);
 
     keyHooks: {
       props: "char charCode key keyCode".split(" "),
+      //兼容处理filter方法
+      //document.onkeydown = function(ev){
+      //  var ev  = ev || window.event;
+      //  alert(ev.which);
+      //}
       filter: function(event, original) {
 
         // Add which for key events
+        //which是弹出所对应键盘的键值
         if (event.which == null) {
+          //基本所有浏览器都支持keyCode
           event.which = original.charCode != null ? original.charCode :
             original.keyCode;
         }
@@ -5958,6 +5965,7 @@ $('#div1').data('name',obj);
 
       // Support: Cordova 2.5 (WebKit) (#13255)
       // All events should have a target; Cordova deviceready doesn't
+      //针对移动端的兼容处理
       if (!event.target) {
         event.target = document;
       }
@@ -6090,7 +6098,9 @@ $('#div1').data('name',obj);
   // jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
   // http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
   jQuery.Event.prototype = {
+    //判断是否阻止了默认事件
     isDefaultPrevented: returnFalse,
+    //判断是否阻止了冒泡
     isPropagationStopped: returnFalse,
     isImmediatePropagationStopped: returnFalse,
 
