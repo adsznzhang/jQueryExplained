@@ -5268,17 +5268,17 @@ $('#div1').data('name',obj);
   //先整体框架，大架子
   //jQuery.event = {
   //  global,
-  //  add,
-  //  remove,
-  //  trigger,
-  //  dispatch,
-  //  handlers,
-  //  props,
-  //  fixHooks,
-  //  keyHooks,
-  //  mouseHooks,
-  //  fix,
-  //  special,
+  //  add,   绑定事件
+  //  remove, 取消事件
+  //  trigger, 主动触发事件
+  //  dispatch, 配发事件的具体操作
+  //  handlers, 函数执行顺序的操作
+  //  props,       JQ中共享原生JS的event属性
+  //  fixHooks,   具体的event兼容
+  //  keyHooks,    键盘的event兼容
+  //  mouseHooks,  鼠标的event兼容
+  //  fix,         event对象的兼容处理
+  //  special,    特殊事件的处理
   //  simulate
   //}
   //jQuery.Event = function(){
@@ -5411,9 +5411,11 @@ $('#div1').data('name',obj);
 
       // Init the element's event structure and main handler, if this is the first
       //这句相当于上面的原生的obj.listenner = {}
+      //添加一个对象
       if (!(events = elemData.events)) {
         events = elemData.events = {};
       }
+      //检测是否有handler
       if (!(eventHandle = elemData.handle)) {
         eventHandle = elemData.handle = function(e) {
           // Discard the second event of a jQuery.event.trigger() and
@@ -5427,6 +5429,10 @@ $('#div1').data('name',obj);
         eventHandle.elem = elem;
       }
 
+      //处理的是这种情况：
+      //$('#div1').on('click mouseover mousedown',function(){
+      //  alert(2);
+      //});
       // Handle multiple events separated by a space
       types = (types || "")
         .match(core_rnotwhite) || [""];
@@ -5444,6 +5450,7 @@ $('#div1').data('name',obj);
         }
 
         // If event changes its type, use the special event handlers for the changed type
+        // 
         special = jQuery.event.special[type] || {};
 
         // If selector defined, determine special event api type, otherwise given type
@@ -5740,6 +5747,7 @@ $('#div1').data('name',obj);
     dispatch: function(event) {
 
       // Make a writable jQuery.Event from the native event object
+      //兼容性处理
       event = jQuery.event.fix(event);
 
       var i, j, ret, matched, handleObj,
@@ -5763,6 +5771,8 @@ $('#div1').data('name',obj);
 
       // Run delegates first; they may want to stop propagation beneath us
       i = 0;
+
+      //判断是否冒泡事件
       while ((matched = handlerQueue[i++]) && !event.isPropagationStopped()) {
         event.currentTarget = matched.elem;
 
@@ -5780,6 +5790,11 @@ $('#div1').data('name',obj);
                 .handle || handleObj.handler)
               .apply(matched.elem, args);
 
+              //判断结果来进行是否阻止冒泡和默认事件
+              //$('#div1').on('click', function(){
+              //  alert(1);
+              //  return false;//阻止冒泡和默认事件
+              //})
             if (ret !== undefined) {
               if ((event.result = ret) === false) {
                 event.preventDefault();
@@ -5874,13 +5889,18 @@ $('#div1').data('name',obj);
       }
     },
 
+    //可以看到下面有一个props属性和一个filter方法
     mouseHooks: {
       props: "button buttons clientX clientY offsetX offsetY pageX pageY screenX screenY toElement"
         .split(" "),
+        //这个方法解决鼠标相关的兼容性操作
       filter: function(event, original) {
         var eventDoc, doc, body,
           button = original.button;
 
+          //document.onclick = function(ev){
+          //  alert(ev.clientY)
+          //}
         // Calculate pageX/Y if missing and clientX/Y available
         if (event.pageX == null && original.clientX != null) {
           eventDoc = event.target.ownerDocument || document;
@@ -5897,6 +5917,7 @@ $('#div1').data('name',obj);
 
         // Add which for click: 1 === left; 2 === middle; 3 === right
         // Note: button is not normalized, so don't use it
+        //鼠标左键 中 右键的兼容处理
         if (!event.which && button !== undefined) {
           event.which = (button & 1 ? 1 : (button & 2 ? 3 : (button & 4 ?
             2 : 0)));
@@ -5914,6 +5935,7 @@ $('#div1').data('name',obj);
       // Create a writable copy of the event object and normalize some properties
       var i, prop, copy,
         type = event.type,
+        //原生的Event
         originalEvent = event,
         fixHook = this.fixHooks[type];
 
@@ -5922,10 +5944,12 @@ $('#div1').data('name',obj);
           rmouseEvent.test(type) ? this.mouseHooks :
           rkeyEvent.test(type) ? this.keyHooks : {};
       }
+      //拼接属性
       copy = fixHook.props ? this.props.concat(fixHook.props) : this.props;
 
       event = new jQuery.Event(originalEvent);
 
+      //遍历属性，赋值原生方法
       i = copy.length;
       while (i--) {
         prop = copy[i];
