@@ -6099,12 +6099,14 @@ $('#div1').data('name',obj);
   // http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
   jQuery.Event.prototype = {
     //判断是否阻止了默认事件
+    //默认值都是false
     isDefaultPrevented: returnFalse,
     //判断是否阻止了冒泡
     isPropagationStopped: returnFalse,
     isImmediatePropagationStopped: returnFalse,
 
     preventDefault: function() {
+      //上来就调用原生的JS
       var e = this.originalEvent;
 
       this.isDefaultPrevented = returnTrue;
@@ -6113,6 +6115,18 @@ $('#div1').data('name',obj);
         e.preventDefault();
       }
     },
+//    $('div').on('click',fucntion(){
+//      alert(1);
+//    })
+//$('span').on('click',fucntion(ev){
+//      alert(2);
+//当阻止冒泡的时候，1就不会弹出（父级元素）
+//ev.stopPropagation()
+//当我们需要在同一元素执行一次事件的时候可以通过
+// ev.stopImmediatePropagation()
+//    });
+//    <div><span></span></div>
+//
     stopPropagation: function() {
       var e = this.originalEvent;
 
@@ -6123,6 +6137,7 @@ $('#div1').data('name',obj);
       }
     },
     stopImmediatePropagation: function() {
+      //可以查看dispathc里面的while 判断，如果为假则继续执行相同元素下的事件，如果为真则不进入while
       this.isImmediatePropagationStopped = returnTrue;
       this.stopPropagation();
     }
