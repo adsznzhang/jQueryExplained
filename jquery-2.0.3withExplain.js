@@ -5980,19 +5980,65 @@ $('#div1').data('name',obj);
         event;
     },
 
+    //特殊事件下的兼容
+    //jQuery.event.special{
+    //  load
+    //  focus
+    //  blur
+    //  click
+    //  beforeunload
+    //  mouseenter
+    //  mouseleave
+    //  focusin
+    //  focusout
+    //}
+    //jquery中的trigger是支持冒泡操作的
+    //$(fucntion(){
+    //  $('#div1').on('click', function(){
+    //    alert(1);
+    //  });
+
+    //  $('input').on('click',fucntion(){
+    //    alert(12);
+    //  });
+
+    //  //可以发现input的trigger可以触发父级上的click事件
+    //  $('input').trigger('click');
+    //});
+
+    
+
     special: {
       load: {
         // Prevent triggered image.load events from bubbling to window.load
+        //不允许冒泡
         noBubble: true
       },
       focus: {
         // Fire native event if possible so blur/focus sequence is correct
+        //focus不支持冒泡操作
+        //$(fucntion(){
+    //  $('#div1').on('focus', function(){
+    //    alert(1);
+    //  });
+
+    //  $('input').on('focus',fucntion(){
+    //    alert(12);
+    //  });
+
+    //  //可以发现input的trigger不可以触发父级上的focus事件
+    //  $('input').trigger('focus');
+    //});
         trigger: function() {
           if (this !== safeActiveElement() && this.focus) {
             this.focus();
             return false;
           }
         },
+        //事件委托把focus加到div1上
+        //$('#div1').delegate('input','focus',fucntion(){
+        //  alert(1)
+        //})
         delegateType: "focusin"
       },
       blur: {
@@ -6004,6 +6050,9 @@ $('#div1').data('name',obj);
         },
         delegateType: "focusout"
       },
+      //$('#input1').on('click',fucntion(){})
+      //$('#input1').trigger('click');
+      //<input type="checkbox" id="input1">
       click: {
         // For checkbox, fire native event so checked state will be right
         trigger: function() {
@@ -6014,6 +6063,13 @@ $('#div1').data('name',obj);
           }
         },
 
+        //当nodeName是a的时候不跳转页面
+        //$('a').on('click',fucntion(){
+        //  alert(1);
+        //});
+        //$('a').trigger('click');
+        
+        //<a href=""></a>
         // For cross-browser consistency, don't fire native .click() on links
         _default: function(event) {
           return jQuery.nodeName(event.target, "a");
@@ -6025,6 +6081,10 @@ $('#div1').data('name',obj);
 
           // Support: Firefox 20+
           // Firefox doesn't alert if the returnValue field is not set.
+          //对火狐进行兼容处理下面的情况
+          //$(window).on('beforeunload',function(){
+          //  return 123;
+          //})
           if (event.result !== undefined) {
             event.originalEvent.returnValue = event.result;
           }
