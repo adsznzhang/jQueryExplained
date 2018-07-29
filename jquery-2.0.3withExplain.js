@@ -5535,11 +5535,13 @@ $('#div1').data('name',obj);
         special, handlers, type, namespaces, origType,
         elemData = data_priv.hasData(elem) && data_priv.get(elem);
 
+        //找到所有绑定的事件
       if (!elemData || !(events = elemData.events)) {
         return;
       }
 
       // Once for each type.namespace in types; type may be omitted
+      //是个事件集合
       types = (types || "")
         .match(core_rnotwhite) || [""];
       t = types.length;
@@ -5551,6 +5553,7 @@ $('#div1').data('name',obj);
           .sort();
 
         // Unbind all events (on this namespace, if provided) for the element
+        //如果off('.aaa')传递的参数不存在，则进入if继续寻找有aaa属性的事件
         if (!type) {
           for (type in events) {
             jQuery.event.remove(elem, type + types[t], handler, selector,
@@ -5669,6 +5672,7 @@ $('#div1').data('name',obj);
       // Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
       if (!onlyHandlers && !special.noBubble && !jQuery.isWindow(elem)) {
 
+        //一层层的寻找，并把每一层push到eventPath下面
         bubbleType = special.delegateType || type;
         if (!rfocusMorph.test(bubbleType + type)) {
           cur = cur.parentNode;
