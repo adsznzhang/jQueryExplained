@@ -6419,6 +6419,85 @@ $('#div1').data('name',obj);
       next: true,
       prev: true
     };
+//DOM操作的结构简化
+
+//$.fn.extend({
+//  find
+//  has
+//  not
+//  filter
+//  is
+//  closest
+//  index
+//  add
+//  addBack
+//})
+//function sibling(){
+//
+//}
+//
+//jQuery.each({
+//  parent
+//  parents
+//  parentsUntil
+//next
+//prev
+//nextAll
+//prevAll
+//prevUntil
+//siblings
+//children
+//contents
+//})
+//jQuery.extend({
+//  filter
+//  dir
+//  sibling
+//})
+//
+//jQuery.fn.extend({
+//  text
+//  append
+//  prepend
+//  before
+//  after
+//  remove
+//  empty
+//  clone
+//  html
+//  replaceWith
+//  detach
+//  domManip
+//})
+//jQuery.each({
+//  appendTo: "append",
+//  prependTo: "prepend",
+//  insertBefore: "before",
+//  insertAfter: "after",
+//  replaceAll: "replaceWith"
+//})
+//jQuery.extend({
+//  clone
+//  buildFragment
+//  cleanData
+//  _evalUrl
+//})
+//
+//function manipulationTarget(){}
+//function disableScript() {}
+//function restoreScript(){}
+//function setGlobalEval() {}
+//function cloneCopyEvent(){}
+//function getAll(){}
+//function fixInput(){}
+//
+//jQuery.fn.extend({
+//  wrapAll
+//  wrapInner
+//  wrapMap
+//  unwrap
+//})
+//
 
   jQuery.fn.extend({
     find: function(selector) {
@@ -6449,6 +6528,7 @@ $('#div1').data('name',obj);
       return ret;
     },
 
+    //has使用例子
     has: function(target) {
       var targets = jQuery(target, this),
         l = targets.length;
@@ -6467,6 +6547,14 @@ $('#div1').data('name',obj);
       return this.pushStack(winnow(this, selector || [], true));
     },
 
+    //filter使用方法进行过滤
+    //<div class="box">div1<span>span</span></div>
+    //<div>div2</div>
+    //$(fucntion(){
+    //  $('div').filter('.box').css('border','1px red solid');
+    //  $('div').not('.box').css('border','1px red solid');
+    //  $('div').has('span').css('border','1px red soldi');
+    //})
     filter: function(selector) {
       return this.pushStack(winnow(this, selector || [], false));
     },
