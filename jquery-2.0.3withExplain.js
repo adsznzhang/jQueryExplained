@@ -6725,12 +6725,16 @@ $('#div1').data('name',obj);
     filter: function(expr, elems, not) {
       var elem = elems[0];
 
+      //对第三个参数做判断
       if (not) {
         expr = ":not(" + expr + ")";
       }
 
+      //返回三目运算，判断是多个元素还是单个元素
       return elems.length === 1 && elem.nodeType === 1 ?
+      //sizzle 里面多个元素筛选
         jQuery.find.matchesSelector(elem, expr) ? [elem] : [] :
+        //sizzle里面单个元素进行筛选
         jQuery.find.matches(expr, jQuery.grep(elems, function(elem) {
           return elem.nodeType === 1;
         }));
@@ -6768,6 +6772,11 @@ $('#div1').data('name',obj);
   // Implement the identical functionality for filter and not
   function winnow(elements, qualifier, not) {
     //第一步对筛选的条件判断是否是函数
+    //举个例子哈
+    //$('div').filter(function(i,elem){
+    //  return false;
+    //}).css('border', '1px red solid');
+
     if (jQuery.isFunction(qualifier)) {
       return jQuery.grep(elements, function(elem, i) {
         /* jshint -W018 */
@@ -6790,9 +6799,10 @@ $('#div1').data('name',obj);
         return jQuery.filter(qualifier, elements, not);
       }
 
+      //复杂的不能在filter当中加not操作的！
       qualifier = jQuery.filter(qualifier, elements);
     }
-
+//实现filter和not的功能
     return jQuery.grep(elements, function(elem) {
       return (core_indexOf.call(qualifier, elem) >= 0) !== not;
     });
