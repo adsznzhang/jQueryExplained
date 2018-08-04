@@ -6409,6 +6409,9 @@ $('#div1').data('name',obj);
       }
     }
   });
+  // 起始位置.代表任意字符，然后是[^]代表不包括冒号，#号等
+  //匹配成功.box  div #div1 :odd ul li
+  //匹配不成功  div：odd ul #li ul[title=“hello”]
   var isSimple = /^.[^:#\[\.,]*$/,
     rparentsprev = /^(?:parents|prev(?:Until|All))/,
     rneedsContext = jQuery.expr.match.needsContext,
@@ -6553,6 +6556,7 @@ $('#div1').data('name',obj);
     //$(fucntion(){
     //  $('div').filter('.box').css('border','1px red solid');
     //  $('div').not('.box').css('border','1px red solid');
+    //在子项上进行排查是否有box
     //  $('div').has('span').css('border','1px red soldi');
     //})
     filter: function(selector) {
@@ -6763,6 +6767,7 @@ $('#div1').data('name',obj);
 
   // Implement the identical functionality for filter and not
   function winnow(elements, qualifier, not) {
+    //第一步对筛选的条件判断是否是函数
     if (jQuery.isFunction(qualifier)) {
       return jQuery.grep(elements, function(elem, i) {
         /* jshint -W018 */
@@ -6771,6 +6776,7 @@ $('#div1').data('name',obj);
 
     }
 
+    //判断节点类型
     if (qualifier.nodeType) {
       return jQuery.grep(elements, function(elem) {
         return (elem === qualifier) !== not;
@@ -6778,6 +6784,7 @@ $('#div1').data('name',obj);
 
     }
 
+    //是字符串的时候！
     if (typeof qualifier === "string") {
       if (isSimple.test(qualifier)) {
         return jQuery.filter(qualifier, elements, not);
