@@ -6503,6 +6503,23 @@ $('#div1').data('name',obj);
 //
 
   jQuery.fn.extend({
+    //<ul>
+    //<li></li>
+    //<li></li>
+    //<li></li>
+    //</ul>
+    //<ol>
+    //<li></li>
+    //<li></li>
+    //<li></li>
+    //</ol>
+    //find的基本使用！
+    //$(fucntion(){
+      //$('li').css('background', 'red');
+      //只改变ul下的li
+      //$('ul').find('li').css('background','red');
+    //})
+
     find: function(selector) {
       var i,
         ret = [],
@@ -6519,13 +6536,16 @@ $('#div1').data('name',obj);
             }
           }));
       }
+      //上面我们传递的是字符串，所有要走下面的for语句
 
       for (i = 0; i < len; i++) {
         jQuery.find(selector, self[i], ret);
       }
 
       // Needed because $( selector, context ) becomes $( context ).find( selector )
+      //进行去重处理
       ret = this.pushStack(len > 1 ? jQuery.unique(ret) : ret);
+
       ret.selector = this.selector ? this.selector + " " + selector :
         selector;
       return ret;
