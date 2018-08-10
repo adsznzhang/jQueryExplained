@@ -6597,6 +6597,11 @@ $('#div1').data('name',obj);
         .length;
     },
 
+    //用法解释
+    //选择与div2最近的祖先节点，满足拥有.box类型的添加CSS
+    //$(fucntion(){
+    //  $('#div2').closest('.box').css('border','1px red solid');
+    //});
     closest: function(selectors, context) {
       var cur,
         i = 0,
@@ -6617,21 +6622,33 @@ $('#div1').data('name',obj);
               cur.nodeType === 1 &&
               jQuery.find.matchesSelector(cur, selectors))) {
 
+            //找到满足条件的就push到数组里
             cur = matched.push(cur);
+            //一旦找到就跳出循环，也就是找最近的意思
             break;
           }
         }
       }
 
+      //去重操作
       return this.pushStack(matched.length > 1 ? jQuery.unique(matched) :
         matched);
     },
 
     // Determine the position of an element within
     // the matched set of elements
+    //只看在兄弟结点中排名第几
     index: function(elem) {
 
       // No argument, return index in parent
+      //<div>1</div>
+      //<div id="div1"></div>
+      //<div>1</div>
+      //$(function(){
+      //  console.log($('#div1').index());
+      //})
+      //可以包含参数，比如在某一类节点内排名第几
+
       if (!elem) {
         return (this[0] && this[0].parentNode) ? this.first()
           .prevAll()
@@ -6639,6 +6656,7 @@ $('#div1').data('name',obj);
       }
 
       // index in selector
+      //调用原生的indexOf，寻找的是elem对象下this[0]排名第几
       if (typeof elem === "string") {
         return core_indexOf.call(jQuery(elem), this[0]);
       }
