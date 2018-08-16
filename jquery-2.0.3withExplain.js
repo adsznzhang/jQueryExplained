@@ -6669,6 +6669,14 @@ $('#div1').data('name',obj);
       );
     },
 
+    //基本使用
+    //$(fucntion(){
+      //end的作用是出栈一次
+      //$('div').add('span').css('border','1px red solid').end().css('border','1px red solid');
+      //addback可以返回到div同时也可以作用于span
+    //});
+    //<div>div</div>
+    //<span>span</span>
     add: function(selector, context) {
       var set = typeof selector === "string" ?
         jQuery(selector, context) :
@@ -6676,7 +6684,8 @@ $('#div1').data('name',obj);
           selector),
         all = jQuery.merge(this.get(), set);
 
-      return this.pushStack(jQuery.unique(all));
+        //去重，入栈
+      return this.pushStack(jQuery.unique(all)); 
     },
 
     addBack: function(selector) {
@@ -6693,6 +6702,8 @@ $('#div1').data('name',obj);
   }
 
   jQuery.each({
+    //基本使用
+    //$('span').parent().css('border','1px red solid');
     parent: function(elem) {
       var parent = elem.parentNode;
       return parent && parent.nodeType !== 11 ? parent : null;
@@ -6700,6 +6711,8 @@ $('#div1').data('name',obj);
     parents: function(elem) {
       return jQuery.dir(elem, "parentNode");
     },
+    //从span上面找父节点直到body为止
+    //$('span').parentsUntil('body').css('border','1px red solid');
     parentsUntil: function(elem, i, until) {
       return jQuery.dir(elem, "parentNode", until);
     },
