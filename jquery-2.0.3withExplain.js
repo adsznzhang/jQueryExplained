@@ -6742,12 +6742,14 @@ $('#div1').data('name',obj);
       return jQuery.sibling(elem.firstChild);
     },
     contents: function(elem) {
+      //childNode会获取所有的节点类型！
       return elem.contentDocument || jQuery.merge([], elem.childNodes);
     }
   }, function(name, fn) {
     jQuery.fn[name] = function(until, selector) {
       var matched = jQuery.map(this, fn, until);
 
+      //后5个字符串和Until匹配如果不匹配，那么
       if (name.slice(-5) !== "Until") {
         selector = until;
       }
@@ -6764,6 +6766,7 @@ $('#div1').data('name',obj);
 
         // Reverse order for parents* and prev-derivatives
         if (rparentsprev.test(name)) {
+          //[1] [2] [3]会变成[3] [2] [1]
           matched.reverse();
         }
       }
@@ -6791,16 +6794,21 @@ $('#div1').data('name',obj);
         }));
     },
 
+    //elem当前要操作的元素，dir指定操作父级还是兄弟节点
     dir: function(elem, dir, until) {
       var matched = [],
         truncate = until !== undefined;
 
+        //把elem[dir]存成elem，它是elem的父级
       while ((elem = elem[dir]) && elem.nodeType !== 9) {
+        //判断元素节点
         if (elem.nodeType === 1) {
+          //判断截至，如果有就跳出循环
           if (truncate && jQuery(elem)
             .is(until)) {
             break;
           }
+          //把父级全部存到数组种
           matched.push(elem);
         }
       }
