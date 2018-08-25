@@ -6900,10 +6900,16 @@ $('#div1').data('name',obj);
   wrapMap.th = wrapMap.td;
 
   jQuery.fn.extend({
+    //只针对文本,而html()会获取所有节点
+    //console.log($('div').text());
     text: function(value) {
+      //acess是属性统一的一个方法可以获取，设置等等
       return jQuery.access(this, function(value) {
+        //如果value是undefi就进行获取的操作
         return value === undefined ?
           jQuery.text(this) :
+          //value如果有值则进行设置的操作
+          //可以看到第一步是进行清空处理
           this.empty()
           .append((this[0] && this[0].ownerDocument || document)
             .createTextNode(value));
@@ -6947,19 +6953,25 @@ $('#div1').data('name',obj);
     },
 
     // keepData is for internal use only--do not document
+    //remove 和 detach的区别是remove会移除元素的属性数据
     remove: function(selector, keepData) {
       var elem,
         elems = selector ? jQuery.filter(selector, this) : this,
         i = 0;
 
+        //对每一个元素进行for循环
       for (;
         (elem = elems[i]) != null; i++) {
+          //如果有true则不走这个if
         if (!keepData && elem.nodeType === 1) {
+          //getAll是获取子元素所有集合
           jQuery.cleanData(getAll(elem));
         }
 
+        //
         if (elem.parentNode) {
           if (keepData && jQuery.contains(elem.ownerDocument, elem)) {
+            //变成全局
             setGlobalEval(getAll(elem, "script"));
           }
           elem.parentNode.removeChild(elem);
@@ -6975,12 +6987,15 @@ $('#div1').data('name',obj);
 
       for (;
         (elem = this[i]) != null; i++) {
+          //判断是否是元素节点
         if (elem.nodeType === 1) {
 
           // Prevent memory leaks
+          //一个参数会获得整个，两个参数会获得内部元素
           jQuery.cleanData(getAll(elem, false));
 
           // Remove any remaining nodes
+          //把内容置空
           elem.textContent = "";
         }
       }
@@ -6988,12 +7003,20 @@ $('#div1').data('name',obj);
       return this;
     },
 
+    //基本使用
+    //var cloneDiv = $('div').clone();
+    //如何让克隆的元素拥有之前的事件呢？需要传递给clone一个true的参数
+
+    //第二参数控制的是子元素下的事件复制，
+
     clone: function(dataAndEvents, deepDataAndEvents) {
       dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
+      //可以看到在第二个参数不存在的情况下，默认是第一个参数的值
       deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents :
         deepDataAndEvents;
 
       return this.map(function() {
+        //关键的地方是调用了jQuery下面的clone。内部工具方法
         return jQuery.clone(this, dataAndEvents, deepDataAndEvents);
       });
     },
