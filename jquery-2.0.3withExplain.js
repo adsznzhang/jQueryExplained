@@ -7217,7 +7217,13 @@ $('#div1').data('name',obj);
         inPage = jQuery.contains(elem.ownerDocument, elem);
 
       // Support: IE >= 9
-      // Fix Cloning issues
+      // Fix Cloning issues解决下面的兼容性问题
+      //<input type="checkbox">
+      //$(fucntion(){
+      //  $('input').prop('checked',true);
+      //  //原生代码种如果进行复制，并不会带有checked属性,只是在IE9和10下
+      //  $('input').clone().appendTo('body');
+      //})
       if (!jQuery.support.noCloneChecked && (elem.nodeType === 1 ||
           elem.nodeType === 11) && !jQuery.isXMLDoc(elem)) {
 
@@ -7230,7 +7236,9 @@ $('#div1').data('name',obj);
         }
       }
 
+      //对事件进行复制
       // Copy the events from the original to the clone
+      //第一个if判断自身的事件，第二个if判断子项的事件复制
       if (dataAndEvents) {
         if (deepDataAndEvents) {
           srcElements = srcElements || getAll(elem);
@@ -7245,8 +7253,12 @@ $('#div1').data('name',obj);
       }
 
       // Preserve script evaluation history
+      //复制包含script标签的情况下：
+      //<div><script>alert(1)</script></div>
+      //$('div').clone().appendTo('body');
       destElements = getAll(clone, "script");
       if (destElements.length > 0) {
+        //对script内容进行全局化
         setGlobalEval(destElements, !inPage && getAll(elem, "script"));
       }
 
