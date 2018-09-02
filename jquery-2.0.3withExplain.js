@@ -7027,15 +7027,22 @@ $('#div1').data('name',obj);
           i = 0,
           l = this.length;
 
+          //获取部分
         if (value === undefined && elem.nodeType === 1) {
           return elem.innerHTML;
         }
 
         // See if we can take a shortcut and just use innerHTML
+        //设置部分
+        //原生的innderHTML只会把内容当作字符串添加而不进行解析
+        //$('span').get(0).innerHTML = '<script>alert (1) </script>';
         if (typeof value === "string" && !rnoInnerhtml.test(value) &&
+        //如果输入的内容不符合规范，则不能进入这个if
           !wrapMap[(rtagName.exec(value) || ["", ""])[1].toLowerCase()]
         ) {
 
+          //下面正则的作用是把不规范的标签转换成规范的
+          //比如只写一个</div>会变成<div></div>
           value = value.replace(rxhtmlTag, "<$1></$2>");
 
           try {
@@ -7056,6 +7063,7 @@ $('#div1').data('name',obj);
         }
 
         if (elem) {
+          //可以看到是先情况，然后用append方法添加
           this.empty()
             .append(value);
         }
