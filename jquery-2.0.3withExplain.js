@@ -6920,7 +6920,9 @@ $('#div1').data('name',obj);
       return this.domManip(arguments, function(elem) {
         if (this.nodeType === 1 || this.nodeType === 11 || this.nodeType ===
           9) {
+            //
           var target = manipulationTarget(this, elem);
+          //调用原生的appendChild
           target.appendChild(elem);
         }
       });
@@ -6931,6 +6933,7 @@ $('#div1').data('name',obj);
         if (this.nodeType === 1 || this.nodeType === 11 || this.nodeType ===
           9) {
           var target = manipulationTarget(this, elem);
+          //添加到第一个子节点的前面
           target.insertBefore(elem, target.firstChild);
         }
       });
@@ -7106,6 +7109,7 @@ $('#div1').data('name',obj);
     domManip: function(args, callback, allowIntersection) {
 
       // Flatten any nested arrays
+      //把第一个参数转换成数组，方便进行循环操作！
       args = core_concat.apply([], args);
 
       var fragment, first, scripts, hasScripts, node, doc,
@@ -7113,22 +7117,27 @@ $('#div1').data('name',obj);
         l = this.length,
         set = this,
         iNoClone = l - 1,
+        //第一个参数存到value
         value = args[0],
+        //判断是否是函数
         isFunction = jQuery.isFunction(value);
 
       // We can't cloneNode fragments that contain checked, in WebKit
       if (isFunction || !(l <= 1 || typeof value !== "string" || jQuery
           .support.checkClone || !rchecked.test(value))) {
+            //进行遍历
         return this.each(function(index) {
           var self = set.eq(index);
           if (isFunction) {
             args[0] = value.call(this, index, self.html());
           }
+          //在执行完回调函数后，再次调用domMainip
           self.domManip(args, callback, allowIntersection);
         });
       }
 
       if (l) {
+        //文档碎片。。。
         fragment = jQuery.buildFragment(args, this[0].ownerDocument,
           false, !allowIntersection && this);
         first = fragment.firstChild;
@@ -7138,6 +7147,8 @@ $('#div1').data('name',obj);
         }
 
         if (first) {
+          //如果存在script标签，在第一次遍历的时候先阻止执行
+          //阻止的方法是在属性里面添加一个type="true"
           scripts = jQuery.map(getAll(fragment, "script"),
             disableScript);
           hasScripts = scripts.length;
