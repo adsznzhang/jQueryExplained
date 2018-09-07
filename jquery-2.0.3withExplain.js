@@ -7285,6 +7285,7 @@ $('#div1').data('name',obj);
       return clone;
     },
 
+    //创建文档碎片
     buildFragment: function(elems, context, scripts, selection) {
       var elem, tmp, tag, wrap, contains, j,
         i = 0,
@@ -7295,6 +7296,7 @@ $('#div1').data('name',obj);
       for (; i < l; i++) {
         elem = elems[i];
 
+        //判断区分，判断结果放到nodes数组里面
         if (elem || elem === 0) {
 
           // Add nodes directly
@@ -7304,6 +7306,7 @@ $('#div1').data('name',obj);
             jQuery.merge(nodes, elem.nodeType ? [elem] : elem);
 
             // Convert non-html into a text node
+            //如果不是标签,则创建文本节点
           } else if (!rhtml.test(elem)) {
             nodes.push(context.createTextNode(elem));
 
