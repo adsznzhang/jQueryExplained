@@ -7209,6 +7209,7 @@ $('#div1').data('name',obj);
     insertAfter: "after",
     replaceAll: "replaceWith"
   }, function(name, original) {
+    //通过jQuery.fn的形式来进行一个插件的扩展
     jQuery.fn[name] = function(selector) {
       var elems,
         ret = [],
@@ -7525,10 +7526,14 @@ $('#div1').data('name',obj);
     }
   }
   jQuery.fn.extend({
+    //$(fucntion(){
+    //  $('span').warp('<div>');
+    //})
     wrapAll: function(html) {
       var wrap;
 
       if (jQuery.isFunction(html)) {
+        //对每一个元素进行调用函数
         return this.each(function(i) {
           jQuery(this)
             .wrapAll(html.call(this, i));
@@ -7549,6 +7554,7 @@ $('#div1').data('name',obj);
         wrap.map(function() {
             var elem = this;
 
+            //循环寻找最里面的元素标签
             while (elem.firstElementChild) {
               elem = elem.firstElementChild;
             }
@@ -7561,6 +7567,8 @@ $('#div1').data('name',obj);
       return this;
     },
 
+    //span的内部子节点将会添加<div>
+    //$('span').wrapInner('<div>');
     wrapInner: function(html) {
       if (jQuery.isFunction(html)) {
         return this.each(function(i) {
@@ -7591,6 +7599,8 @@ $('#div1').data('name',obj);
       });
     },
 
+    //除了body以外的父级元素将会被删除
+    //$('span').unwrap();
     unwrap: function() {
       return this.parent()
         .each(function() {
