@@ -7612,6 +7612,14 @@ $('#div1').data('name',obj);
         .end();
     }
   });
+  //原生下的CSS操作
+  //$(function(){
+    //style只能获取行间的样式，无法获取外部样式
+  //  $('#div1').get(0).style.color;
+  //下面的可以获取最终的样式,只能获取不能设置
+  //window.getComputedStyle($('#div1').get(0),null).color
+  //})
+  //$('div').css(),可以接受两个参数,一个参数是获取，两个参数是设置
   var curCSS, iframe,
     // swappable if display is none or starts with table except "table", "table-cell", or "table-caption"
     // see here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
@@ -7749,6 +7757,9 @@ $('#div1').data('name',obj);
           return map;
         }
 
+        //$('#div1').css('color')
+        //$('#div1').css('color','yellow');
+        //判断第二个参数是否存在，而调用style或者css
         return value !== undefined ?
           jQuery.style(elem, name, value) :
           jQuery.css(elem, name);
