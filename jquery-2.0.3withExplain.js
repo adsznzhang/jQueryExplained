@@ -7747,10 +7747,13 @@ $('#div1').data('name',obj);
           i = 0;
 
         if (jQuery.isArray(name)) {
+          //寻找getStyle这个函数可以发现
+          //它调用的是window.getComputedStyle
           styles = getStyles(elem);
           len = name.length;
 
           for (; i < len; i++) {
+            // 数组情况下，接受4个参数
             map[name[i]] = jQuery.css(elem, name[i], false, styles);
           }
 
@@ -7896,6 +7899,7 @@ $('#div1').data('name',obj);
 
       // Make sure that we're working with the right name
       name = jQuery.cssProps[origName] || (jQuery.cssProps[origName] =
+        //检测浏览器前缀名字
         vendorPropName(elem.style, origName));
 
       // gets hook for the prefixed version
@@ -7918,6 +7922,7 @@ $('#div1').data('name',obj);
       }
 
       // Return, converting to number if forced or a qualifier was provided and val looks numeric
+      //110px 转换成数字
       if (extra === "" || extra) {
         num = parseFloat(val);
         return extra === true || jQuery.isNumeric(num) ? num || 0 : val;
