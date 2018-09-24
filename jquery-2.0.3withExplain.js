@@ -7851,6 +7851,7 @@ $('#div1').data('name',obj);
         type = typeof value;
 
         // convert relative number strings (+= or -=) to relative numbers. #7345
+        //把字符数字变成数字
         if (type === "string" && (ret = rrelNum.exec(value))) {
           value = (ret[1] + 1) * ret[2] + parseFloat(jQuery.css(elem,
             name));
