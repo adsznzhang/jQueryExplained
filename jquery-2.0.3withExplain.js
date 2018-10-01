@@ -7695,6 +7695,7 @@ $('#div1').data('name',obj);
         continue;
       }
 
+      //hide的时候通过原生获取
       values[index] = data_priv.get(elem, "olddisplay");
       display = elem.style.display;
       if (show) {
@@ -7727,7 +7728,9 @@ $('#div1').data('name',obj);
     // Set the display of most of the elements in a second loop
     // to avoid the constant reflow
     for (index = 0; index < length; index++) {
+      
       elem = elements[index];
+      //有style才能走后面
       if (!elem.style) {
         continue;
       }
