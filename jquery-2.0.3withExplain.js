@@ -7803,6 +7803,11 @@ $('#div1').data('name',obj);
           if (computed) {
             // We should always get a number back from opacity
             var ret = curCSS(elem, "opacity");
+            //当结果是空的时候自动返回1
+            //样式当中透明度并没有写,下面例子返回的结果是1
+            //$(function(){
+            //  console.log($('div1').css('opacity'));
+            //})
             return ret === "" ? "1" : ret;
           }
         }
@@ -10479,6 +10484,7 @@ $('#div1').data('name',obj);
     return jQuery.isWindow(elem) ? elem : elem.nodeType === 9 && elem.defaultView;
   }
   // Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
+  //$('#div1').width()调用的就是 $('#div1').css('width')
   jQuery.each({
     Height: "height",
     Width: "width"
@@ -10519,11 +10525,18 @@ $('#div1').data('name',obj);
               );
             }
 
+            //innerWidth 是 width + padding
+            //outerWidth 是 width + padding + border
+            //outerWidth(true) 是 width + padding + border + margin
+            //下面原生的方法无法获取隐藏元素的宽度，但是jQuery可以获取
+            //console.log($('#div1').get(0).offsetWidth);
             return value === undefined ?
               // Get width or height on the element, requesting but not forcing parseFloat
+              //获取
               jQuery.css(elem, type, extra) :
 
               // Set width or height on the element
+              //设置
               jQuery.style(elem, type, value, extra);
           }, type, chainable ? margin : undefined, chainable,
           null);
