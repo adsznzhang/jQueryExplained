@@ -8126,8 +8126,10 @@ $('#div1').data('name',obj);
           // however, it must have a current display style that would benefit from this
           return elem.offsetWidth === 0 && rdisplayswap.test(jQuery.css(
               elem, "display")) ?
+              //原生JS是无法获取隐藏元素属性的，可以看到Jquery通过Swap把属性显现出来
+
             jQuery.swap(elem, cssShow, function() {
-              return getWidthOrHeight(elem, name, extra);
+               return getWidthOrHeight(elem, name, extra);
             }) :
             getWidthOrHeight(elem, name, extra);
         }
