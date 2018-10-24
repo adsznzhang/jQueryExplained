@@ -8234,12 +8234,14 @@ $('#div1').data('name',obj);
       jQuery.cssHooks[prefix + suffix].set = setPositiveNumber;
     }
   });
+  //Ajax
   var r20 = /%20/g,
     rbracket = /\[\]$/,
     rCRLF = /\r?\n/g,
     rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
     rsubmittable = /^(?:input|select|textarea|keygen)/i;
 
+    //实例方法
   jQuery.fn.extend({
     serialize: function() {
       return jQuery.param(this.serializeArray());
@@ -8282,12 +8284,17 @@ $('#div1').data('name',obj);
 
   //Serialize an array of form elements or a set of
   //key/values into a query string
+  //工具方法
+  //把对象或者数组序列化
+  //$.param({'aaa':'1', 'bbb':'2'});
   jQuery.param = function(a, traditional) {
     var prefix,
       s = [],
       add = function(key, value) {
         // If value is a function, invoke it and return its value
+        //判断是否是个函数
         value = jQuery.isFunction(value) ? value() : (value == null ? "" :
+
           value);
         s[s.length] = encodeURIComponent(key) + "=" + encodeURIComponent(
           value);
@@ -8314,6 +8321,7 @@ $('#div1').data('name',obj);
     }
 
     // Return the resulting serialization
+    //把空格替换成+号
     return s.join("&")
       .replace(r20, "+");
   };
