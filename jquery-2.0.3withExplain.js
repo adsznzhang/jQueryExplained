@@ -8725,6 +8725,7 @@ $('#div1').data('name',obj);
         i,
         // Create the final options object
         s = jQuery.ajaxSetup({}, options),
+        //更改执行上下文
         // Callbacks context
         callbackContext = s.context || s,
         // Context for global events is callbackContext if it is a DOM node or jQuery collection
