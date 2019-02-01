@@ -8597,6 +8597,23 @@ $('#div1').data('name',obj);
   };
 
   // Attach a bunch of functions for handling common AJAX events
+  //定义关于AJAX的全局事件，进行事件触发
+  //搜索事件可以看到ajastart和ajaxstop都是document触发，后面三个可以元素上触发
+
+  //$(function(){
+  //  $('#div1').on('ajaxSend', function(){
+  //    console.log(123);
+  //  });
+  //  $.ajax({
+  //    url:'2data.php',
+  //必须设置这里面的context才能决定在哪触发
+//        context: document, 或者 $('div1')
+//        success: function(){
+//
+//        }
+  //    
+  //  })
+  //})
   jQuery.each(["ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError",
     "ajaxSuccess", "ajaxSend"
   ], function(i, type) {
@@ -8737,6 +8754,14 @@ $('#div1').data('name',obj);
         deferred = jQuery.Deferred(),
         completeDeferred = jQuery.Callbacks("once memory"),
         // Status-dependent callbacks
+        //配置参数,默认空对象
+        //$.ajax({
+        //  statusCode:{
+        //    404: function(){
+        //      alert('没有找到')
+        //    }
+        //  }
+        //})
         statusCode = s.statusCode || {},
         // Headers (they are sent all at once)
         requestHeaders = {},
@@ -8817,6 +8842,9 @@ $('#div1').data('name',obj);
         };
 
       // Attach deferreds
+      //通过promise加入延迟对象
+        //console.log(jqXHR);
+        //aaa
       deferred.promise(jqXHR)
         .complete = completeDeferred.add;
       jqXHR.success = jqXHR.done;
@@ -8868,6 +8896,7 @@ $('#div1').data('name',obj);
 
       // Watch for a new set of requests
       if (fireGlobals && jQuery.active++ === 0) {
+        //可以看到ajaxstart是用的默认event调用也就是，在document上而不是在元素上
         jQuery.event.trigger("ajaxStart");
       }
 
@@ -8969,6 +8998,7 @@ $('#div1').data('name',obj);
           globalEventContext.trigger("ajaxSend", [jqXHR, s]);
         }
         // Timeout
+        //超时返回abort里面的内容信息
         if (s.async && s.timeout > 0) {
           timeoutTimer = setTimeout(function() {
             jqXHR.abort("timeout");
@@ -9106,6 +9136,7 @@ $('#div1').data('name',obj);
         }
       }
 
+      //可以看到ajax调用后，整个返回的就是一个jqXHR对象
       return jqXHR;
     },
 
